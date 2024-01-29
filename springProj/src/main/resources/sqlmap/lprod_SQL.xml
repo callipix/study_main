@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lprod">
+	
+	<select id="list" resultType="lprodVO">
+		SELECT LPROD_ID, LPROD_GU, LPROD_NM
+		FROM   LPROD
+		WHERE  1 = 1
+		<if test="keyword!=null and keyword!=''">
+		AND    (
+				LPROD_GU LIKE '%' || #{keyword} || '%'
+			OR  LPROD_NM LIKE '%' || #{keyword} || '%'
+		)
+		</if>
+	</select>
+	
+	<!-- LprodVO[lprodId=2,lprodGu=null,lprodNm=null] -->
+	<select id="listOne" parameterType="lprodVO" resultType="lprodVO">
+		SELECT LPROD_ID, LPROD_GU, LPROD_NM
+		FROM   LPROD
+		WHERE  LPROD_ID = #{lprodId}
+	</select>
+	
+	<!-- [lprodId=36,lprodGu=TT092,lprodNm=트리거 테스트 2] -->
+	<update id="updateOne" parameterType="lprodVO">
+		UPDATE LPROD
+		SET    LPROD_GU=#{lprodGu}, LPROD_NM=#{lprodNm}
+		WHERE  LPROD_ID = #{lprodId}
+	</update>
+
+	<!-- [lprodId=36,lprodGu=null,lprodNm=null] -->
+	<delete id="deleteOne" parameterType="lprodVO">
+		DELETE FROM LPROD
+		WHERE  LPROD_ID = #{lprodId}
+	</delete>	
+	
+	<insert id="insertOne" parameterType="lprodVO">
+		INSERT INTO LPROD(LPROD_ID,LPROD_GU,LPROD_NM)
+		VALUES(#{lprodId}, #{lprodGu}, #{lprodNm}) 
+	</insert>
+</mapper>
+
+
+

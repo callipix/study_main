@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	https://java.sun.com/xml/ns/javaee/web-app_3_1.xsd">
+<!-- 
+web.xml : tomcat서버의 설정
+웹 프로젝트의 배포 설명자/배치 기술서(deployment description)이며, 웹 프로젝트가 배포되는 데 이용되는 XML 형식의
+자바 웹 애플리케이션 환경 설정 부분을 담당함
+스프링 웹 프로젝트가 실행되면 가장 먼저 web.xml 파일을 읽어들이고 위부터 차례로 태그를 해석함
+
+1) 네임 스페이스 : 코드에서 이름은 같지만 내용이 전혀 다른 요소와 충돌하지 않도록, 즉 이런 요소를 구별하는 데 사용함
+2) 스키마 : 코드의 구조와 요소, 속성의 관계를 정의하여 다양한 자료형을 사용할 수 있도록 정의된 문서 구조, 즉 틀을 의미함
+   xsi:schemaLocation 속성은 참조하고자 하는 인스턴스 문서의 URI를 지정함
+   					  두 개의 속성 값은 공백으로 구분. 첫 번째는 사용할 네임 스페이스(보통 기본 네임 스페이스와 동일)고,
+   					  					     두 번째는 참조할 스키마 파일 이름.
+-->
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/root-context.xml
+					 /WEB-INF/spring/security-context.xml
+		</param-value>
+	</context-param>
+	
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Processes application requests -->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- 한글 처리 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<!-- 모든 요청에서 -->
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 스프링 시큐리티가 제공하는 서블릿 필터 클래스를 서블릿 컨테이너에 등록함 -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+</web-app>
