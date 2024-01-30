@@ -26,8 +26,11 @@
 			<div class="form-group row">
 				<div class="offset-sm-2 col-sm-10">
 					<div class="form-check">
-						<input type="checkbox" class="form-check-input" id="exampleCheck2">
-						<label class="form-check-label" for="exampleCheck2">자동 로그인</label>
+					<!-- 로그인 상태를 유지시켜주는 체크박스
+						 체크시 : PERSISTENT_LOGINS에 정보가 INSERT된다.
+					 -->
+						<input type="checkbox" name="remember-me" class="form-check-input" id="remember-me">
+						<label class="form-check-label" for="remember-me">자동 로그인</label>
 					</div>
 				</div>
 			</div>
@@ -42,8 +45,3 @@
 		<sec:csrfInput />
 	</form>
 </div>
-
-
-
-
-

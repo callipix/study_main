@@ -1,5 +1,6 @@
 package kr.or.ddit.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,8 @@ public class BrdController {
 		return "brd/list";
 	}
 	//회원게시판-등록(로그인 한 회원만 접근 가능)
+	// ROLE_MEMBER의 권한을 갖고있을때
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
 	@GetMapping("/register")
 	public String register() {
 		log.info("brd->register->로그인 한 회원만 접근 가능");

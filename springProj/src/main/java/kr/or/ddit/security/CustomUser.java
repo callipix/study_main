@@ -1,14 +1,12 @@
 package kr.or.ddit.security;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.StudVO;
 
 //사용자가 유저를 정의함
@@ -31,15 +29,13 @@ public class CustomUser extends User {
 		super(username, password, authorities);
 	}
 
-	//생성자.return memberVO == null?null:new CustomUser(memberVO);
+	//생성자.return memberVO == null ? null : new CustomUser(memberVO);
 	public CustomUser(StudVO studVO) {
 		//사용자가 정의한 (select한) MemberVO 타입의 객체 memberVO를
 		//스프링 시큐리티에서 제공해주고 있는 UsersDetails 타입으로 변환
-		//회원정보를 보내줄테니 이제부터 프링이 너가 관리해줘
-		super(studVO.getStudId()+"",studVO.getStudPw(),
-				studVO.getStudAuthVOList().stream()
-			.map(auth->new SimpleGrantedAuthority(auth.getAuth()))
-			.collect(Collectors.toList())
+		//회원 정보를 보내주면 스프링에서 직접 관리 해줌
+		super(studVO.getStudId()+"", studVO.getStudPw() ,
+				studVO.getStudAuthVOList().stream().map(auth->new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList())
 			);
 		this.studVO = studVO;
 	}
@@ -52,9 +48,4 @@ public class CustomUser extends User {
 		this.studVO = studVO;
 	}
 	
-	
 }
-
-
-
-

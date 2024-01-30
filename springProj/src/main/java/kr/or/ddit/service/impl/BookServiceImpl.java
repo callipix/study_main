@@ -28,24 +28,24 @@ public class BookServiceImpl implements BookService {
 	//IoC(Inversion of Control):제어의 역전
 	@Autowired
 	BookDao bookDao;
-	
+	// 책 추가
 	@Override
 	public int createPost(BookVO bookVO) {
 		return this.bookDao.createPost(bookVO);
 	}
-
+	// 책 상세
 	@Override
 	public BookVO detail(BookVO bookVO) {
 		return this.bookDao.detail(bookVO);
 	}
 
-	//책 수정
+	// 책 수정
 	@Override
 	public int updatePost(BookVO bookVO) {
 		return this.bookDao.updatePost(bookVO);
 	}
 
-	//책 삭제
+	// 책 삭제
 	@Override
 	public int deletePost(BookVO bookVO) {
 		return this.bookDao.deletePost(bookVO);
@@ -58,7 +58,3 @@ public class BookServiceImpl implements BookService {
 	}
 	
 }
-
-
-
-

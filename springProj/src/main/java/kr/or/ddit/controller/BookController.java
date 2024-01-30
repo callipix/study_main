@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class BookController {
 	BookService bookService;
 	
 	//요청URI : /create
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value="/create",method=RequestMethod.GET)
 	public ModelAndView create() {
 		/*
@@ -188,11 +190,3 @@ public class BookController {
 		return bookVOList;
 	}
 }
-
-
-
-
-
-
-
-
