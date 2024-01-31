@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.QuickMapper">
+
+	<insert id="createPost" parameterType="quickVO">
+		INSERT INTO	QUICK(EMAIL_ADRES, PASSWORD, REGISTER_ID, REGIST_DT)
+		VALUES(#{emailAdres},#{password},#{registerId},SYSDATE)
+	</insert>
+
+	<insert id="insertQuickAttach" parameterType="quickAttachVO">
+		INSERT INTO
+		QUICK_ATTACH(ITEM_ID, SEQ, PICTURE_URL, PICTURE_SIZE, PICTURE_TYPE,	REG_DATE)
+		VALUES(#{itemId}, #{seq}, #{pictureUrl}, #{pictureSize}, #{pictureType}, SYSDATE)
+	</insert>
+	<!-- 오라클 카멜변환기에서 resultMap과 같음 -->
+	<!-- 최종적으로 리턴 -> quickMap -->
+	<resultMap type="quickVO" id="quickMap">
+		<result property="emailAdres" column="EMAIL_ADRES" />
+		<result property="password" column="PASSWORD" />
+		<result property="registerId" column="REGISTER_ID" />
+		<result property="registDt" column="REGIST_DT" />
+		<result property="updaterId" column="UPDATER_ID" />
+		<result property="updateDt" column="UPDATE_DT" />
+
+		<collection property="quickAttachVOList" resultMap="quickAttachMap"></collection>
+	</resultMap>
+
+	<resultMap type="quickAttachVO" id="quickAttachMap">
+		<result property="itemId" column="ITEM_ID" />
+		<result property="seq" column="SEQ" />
+		<result property="pictureUrl" column="PICTURE_URL" />
+		<result property="pictureSize" column="PICTURE_SIZE" />
+		<result property="pictureType" column="PICTURE_TYPE" />
+		<result property="regDate" column="REG_DATE" />
+	</resultMap>
+
+	<!-- 매퍼인터페이스의 메소드명이 매퍼 xml의 id로 옴 -->
+	<select id="detail" parameterType="String" resultMap="quickMap">
+		SELECT
+		A.EMAIL_ADRES, A.PASSWORD, A.REGISTER_ID, A.REGIST_DT, A.UPDATER_ID,
+		A.UPDATE_DT ,
+		B.ITEM_ID, B.SEQ, B.PICTURE_URL, B.PICTURE_SIZE, B.PICTURE_TYPE, B.REG_DATE
+		FROM QUICK A LEFT OUTER JOIN QUICK_ATTACH B ON(A.EMAIL_ADRES = B.ITEM_ID)
+		WHERE A.EMAIL_ADRES = #{emailAdres}
+	</select>
+</mapper>

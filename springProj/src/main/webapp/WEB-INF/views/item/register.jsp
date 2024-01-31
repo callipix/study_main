@@ -66,6 +66,12 @@
 	<button type="reset">초기화</button>
 </form>
 <!-- 폼 복사 -->
+<!-- 
+요청URI : /item/registerPost3
+요청파라미터 : {itemName=삼성태블릿,price=120000,description=쓸만함
+         ,uploadFile=파일객체들}
+요청방식 : post
+-->
 <hr />
 <form action="/item/registerPost3?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
 	<table>
@@ -78,12 +84,8 @@
 			<td><input type="text" name="price" required="required" placeholder="가격"></td>
 		</tr>	
 		<tr>
-			<th>상품이미지</th>
-			<td><input type="file" name="uploadFile" placeholder="상품이미지"></td>
-		</tr>	
-		<tr>
-			<th>상품이미지</th>
-			<td><input type="file" name="uploadFile2" placeholder="상품이미지2"></td>
+			<th>다중 상품이미지</th>
+			<td><input type="file" name="uploadFile" placeholder="상품이미지" multiple="multiple" ></td>
 		</tr>	
 		<tr>
 			<th>개요</th>

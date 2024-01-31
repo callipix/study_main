@@ -15,11 +15,11 @@
 	BasicDataSource dataSource = new BasicDataSource();
 	dataSource.setDriverClassName() = "oracle.jdbc.driver.OracleDriver";
 	 -->
-	 <!-- dataSource : 데이터베이스와 관련된 정보를 설정 -->
+	<!-- dataSource : 데이터베이스와 관련된 정보를 설정 -->
 	<!-- 
 	db : database(개념. 공유/저장/통합/운영). RDB(Relational DB.관계형DB)
 	dbms : database management system(DB관리시스템.오라클)
-	localhost=127.0.0.1=내ip주소
+	localhost = 127.0.0.1 = 내 ip주소
 	xe : express(OracleXE11g.r2) => SID(sequence ID)
 	 -->
 	<!-- 
@@ -28,7 +28,7 @@
 	dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
 	 -->
 	<bean id="uploadFolder" class="java.lang.String">
-		<constructor-arg value="C:\\Users\\PC-12\\git\\repository\\springProj\\src\\main\\webapp\\resources\\upload"></constructor-arg>
+		<constructor-arg value="C:\Users\PC-12\git\repository\springProj\src\main\webapp\resources\upload"></constructor-arg>
 	</bean>
 	
 	<bean id="dataSource" 
@@ -56,9 +56,7 @@
 		<property name="configLocation"
 		 value="/WEB-INF/mybatisAlias/mybatisAlias.xml" />
 	</bean>
-	<!-- 데이터베이스에 개별적으로 쿼리를 실행시키는 객체.
-		이 객체를 통해 query를 실행함
-	 -->
+	<!-- 데이터베이스에 개별적으로 쿼리를 실행시키는 객체. 이 객체를 통해 query를 실행함 -->
 	<bean id="sqlSessionTemplate"
 	class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />

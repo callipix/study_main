@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.ItemMapper">
-<!-- 매퍼 인터페이스 사용시 네임스페이스는 패키지 풀네임을 적어준다 -->
-<!-- public int registerPost(ItemVO itemVO) -->
-<!-- public int registerPost(ItemVO itemVO) 
-   들어옴 : ItemVO[itemId=0,itemName=삼성태블릿,price=120000,description=쓸만함
-           pictureUrl=null,uploadFile=/2024/01/30/dsfak_개똥이.jpg]
-   나감   : ItemVO[itemId=1,itemName=삼성태블릿,price=120000,description=쓸만함
-           pictureUrl=null,uploadFile=/2024/01/30/dsfak_개똥이.jpg]
-           
-public int registerPost(ItemVO itemVO) 
-   들어옴 : ItemVO[itemId=0,itemName=삼성태블릿,price=120000,description=쓸만함
-           pictureUrl=/2024/01/30/dsfak_개똥이.jpg,uploadFile=파일객체]
-   나감   : ItemVO[itemId=1,itemName=삼성태블릿,price=120000,description=쓸만함
-           pictureUrl=/2024/01/30/dsfak_개똥이.jpg,uploadFile=]
--->
+	<!-- 매퍼 인터페이스 사용시 네임스페이스는 패키지 풀네임을 적어준다 -->
+	<!-- public int registerPost(ItemVO itemVO) -->
+	<!-- public int registerPost(ItemVO itemVO) 들어옴 : ItemVO[itemId=0,itemName=삼성태블릿,price=120000,description=쓸만함 
+		pictureUrl=null,uploadFile=/2024/01/30/dsfak_개똥이.jpg] 나감 : ItemVO[itemId=1,itemName=삼성태블릿,price=120000,description=쓸만함 
+		pictureUrl=null,uploadFile=/2024/01/30/dsfak_개똥이.jpg] public int registerPost(ItemVO 
+		itemVO) 들어옴 : ItemVO[itemId=0,itemName=삼성태블릿,price=120000,description=쓸만함 
+		pictureUrl=/2024/01/30/dsfak_개똥이.jpg,uploadFile=파일객체] 나감 : ItemVO[itemId=1,itemName=삼성태블릿,price=120000,description=쓸만함 
+		pictureUrl=/2024/01/30/dsfak_개똥이.jpg,uploadFile=] -->
 	<insert id="registerPost" parameterType="itemVO">
-		<selectKey resultType="int" order="BEFORE" keyProperty="itemId">
+		<selectKey resultType="int" order="BEFORE"
+			keyProperty="itemId">
 			select NVL(max(item_id) , 0) + 1 from item
 		</selectKey>
 		insert into item( ITEM_ID, ITEM_NAME, PRICE, DESCRIPTION, PICTURE_URL)
-		values (#{itemId}, #{itemName}, #{price}, #{description}, #{pictureUrl} )
+		values (#{itemId}, #{itemName}, #{price}, #{description},
+		#{pictureUrl} )
 	</insert>
 
 	<insert id="registerPost2" parameterType="item2VO">
-		<selectKey resultType="int" order="BEFORE" keyProperty="itemId">
+		<selectKey resultType="int" order="BEFORE"
+			keyProperty="itemId">
 			select NVL(max(item_id) , 0) + 1 from item2
 		</selectKey>
-		insert into item2( ITEM_ID, ITEM_NAME, PRICE, DESCRIPTION, PICTURE_URL,PICTURE_URL2)
-		values (#{itemId}, #{itemName}, #{price}, #{description}, #{pictureUrl} ,#{pictureUrl2} )
+		insert into item2( ITEM_ID, ITEM_NAME, PRICE, DESCRIPTION,
+		PICTURE_URL,PICTURE_URL2)
+		values (#{itemId}, #{itemName}, #{price},
+		#{description}, #{pictureUrl} ,#{pictureUrl2} )
 	</insert>
+
+	<insert id="registerPost3" parameterType="item3VO">
+		<selectKey resultType="int" order="BEFORE" keyProperty="itemId">
+			select NVL(max(item_id) , 0) + 1 from item3
+		</selectKey>
+		insert into item3( ITEM_ID, ITEM_NAME, PRICE, DESCRIPTION )
+		values
+		(#{itemId}, #{itemName}, #{price}, #{description} )
+	</insert>
+
+	<!-- AttachVO[itemId=1 , seq=1,pictureUrl=웹경로 , pictureSize=123443,pictureType=image/jped,regDate=null] -->
+	<insert id="insertAttach" parameterType="attachVO">
+		insert into attach (ITEM_ID, SEQ, PICTURE_URL, PICTURE_SIZE, PICTURE_TYPE, REG_DATE)
+		values( #{itemId}, #{seq}, #{pictureUrl} ,#{pictureSize} , #{pictureType}, sysdate)
+	</insert>
+	
 </mapper>

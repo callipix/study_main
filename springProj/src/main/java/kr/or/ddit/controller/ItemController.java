@@ -140,54 +140,77 @@ public class ItemController {
 	   @PostMapping("/registerPost2")
 	   public String registerPost2(Item2VO item2VO) {
 		   log.info("registerPost2 -> item2VO : " + item2VO);
-		   //2개의 파일을 업로드하고
-		   MultipartFile uploadFile = item2VO.getUploadFile();
-		   MultipartFile uploadFile2 = item2VO.getUploadFile2();
+		   // 2개의 파일을 업로드하고
+		   // jsp input type="file" -> 스프링 파일 객체
+		   MultipartFile multipartFile1 = item2VO.getUploadFile();
+		   MultipartFile multipartFile2 = item2VO.getUploadFile2();
+		   // 스프링파일객체의 순수한 파일명 추출
+		   String uploadFileName1 = multipartFile1.getOriginalFilename();
+		   String uploadFileName2 = multipartFile2.getOriginalFilename();
 		   
 //		   String uploadFolder = "C:\\Users\\PC-12\\git\\repository\\springProj\\src\\main\\webapp\\resources\\upload\\test2";
 //		      경로 root-context에서 잡아줘서 따로 설정할 필요 없음!
 		   File uploadPath = new File(uploadFolder , getFolder());
+		   // 쉼표 역할 
 		 
-		   if(uploadPath.exists()) {
+		   // 연월일 폴더 생성 실행
+		   if(uploadPath.exists() == false) {
 			   uploadPath.mkdirs();
 		   }
-		   String uploadFileName = uploadFile.getOriginalFilename();
-		   String uploadFileName2 = uploadFile2.getOriginalFilename();
-		   UUID uuid = UUID.randomUUID();
+		   UUID uuid1 = UUID.randomUUID();
 		   UUID uuid2 = UUID.randomUUID();
-		   
-		   uploadFileName = uuid.toString() + "_" + uploadFileName;
+
+		   uploadFileName1 = uuid1.toString() + "_" + uploadFileName1;
 		   uploadFileName2 = uuid2.toString() + "_" + uploadFileName2;
 		   
 		   item2VO.setItemId(0);//자동 데이터 생성
-           item2VO.setPictureUrl("/" + getFolder().replace("\\" , "/") + "/"+ uploadFileName);
-           item2VO.setPictureUrl2("/" + getFolder().replace("\\" , "/") + "/"+ uploadFileName2);
 			// uuid가 적용된 파일명
 		   
-		   File saveFile = new File(uploadPath ,uploadFileName);
+		   File saveFile1 = new File(uploadPath ,uploadFileName1);
 		   File saveFile2 = new File(uploadPath ,uploadFileName2);
 		   
-		   //ITEM2테이블에 insert해보자
 		   try {
-			uploadFile.transferTo(saveFile);
-			uploadFile2.transferTo(saveFile2);
+		   // 스프링파일객체.복사(파일타입 객체)
+			multipartFile1.transferTo(saveFile1);
+			multipartFile2.transferTo(saveFile2);
 			
+			// 2개의 파일을 업로드하고
+			// ITEM2 테이블에 insert 해보자
+			item2VO.setPictureUrl("/" + getFolder().replace("\\" , "/") + "/"+ uploadFileName1);
+			item2VO.setPictureUrl2("/" + getFolder().replace("\\" , "/") + "/"+ uploadFileName2);
+
 			int result = this.itemService.registerPost2(item2VO);
 			
 			log.info("result : " + result);
 		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
-		   
 		   //redirect : url 재요청
 		   return "redirect:/item/detail2?itemId="+item2VO.getItemId();
 	   }
-	   
+/*
+요청URI : /item/registerPost3
+요청파라미터 : {itemName=삼성태블릿,price=120000,description=쓸만함
+         ,uploadFile=파일객체들}
+요청방식 : post
+ */
+	   @PostMapping("/registerPost3")
 	   public String registerPost3(Item3VO item3VO) {
 		   
-		   return "";
+		   log.info("registerPost3 -> item3VO : " + item3VO);
+		   
+		   File uploadPath = new File(uploadFolder , getFolder());
+		   
+		   //연월일 폴더 생성 실행
+		   if(uploadPath.exists() == false) {
+			   uploadPath.mkdirs();
+		   }
+		   int result = this.itemService.registerPost3(item3VO);
+		   		   
+		   log.info("registerPost3 -> result : " + result);
+		   return "redirect:/item/detail3?itemId="+item3VO.getItemId();
 	   }
-	   
+	
 	 //이미지인지 판단. 썸네일은 이미지만 가능하므로..
 	   public boolean checkImageType(File file) {
 	      //MIME(Multipurpose Internet Mail Extensions) : 문서, 파일 또는 바이트 집합의 성격과 형식. 표준화

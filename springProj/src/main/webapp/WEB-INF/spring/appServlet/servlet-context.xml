@@ -10,8 +10,7 @@
 		http://www.springframework.org/schema/security 
 		http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 <!-- servlet-context.xml : 스프링 웹(view) 설정 파일
-	뷰(JSP 웹 페이지)와 관련 있는 빈(bean) 객체를 설정함. 즉, 컨트롤러, MultipartResolver
-	, Interceptor, URI와 관련 설정을 담는 클래스를 설정함
+	뷰(JSP 웹 페이지)와 관련 있는 빈(bean) 객체를 설정함. 즉, 컨트롤러, MultipartResolver	, Interceptor, URI와 관련 설정을 담는 클래스를 설정함
  -->
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -64,7 +63,7 @@
 	<context:component-scan base-package="kr.or.ddit" />
 	
 	<!-- 스프링 시큐리티 어노테이션을 활성화
-    - pre-post-annotations="enabled" -> 골뱅이PreAuthorize, 골뱅이PostAuthorize 활성화
+    - pre-post-annotations="enabled" -> @PreAuthorize, @PostAuthorize 활성화
       *** PreAuthorize : 특정 메소드를 실행하기 전에 role 체킹
       PostAuthorize : 특정 메소드를 실행한 후에 role 체킹
     - secured-annotations="enabled" -> 골뱅이Secured를 활성화

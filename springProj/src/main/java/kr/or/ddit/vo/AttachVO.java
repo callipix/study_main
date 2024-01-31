@@ -8,7 +8,7 @@ public class AttachVO {
 	private int itemId;
 	private int seq;
 	private String pictureUrl;
-	private int pictureSize;
-	private String pitctureType;
+	private long pictureSize;
+	private String pictureType;
 	private Date regDate;
 }
