@@ -12,4 +12,6 @@ public interface ItemService {
 
 	public int registerPost3(Item3VO item3vo);
 
+	public Item3VO detail3(int itemId);
+
 }

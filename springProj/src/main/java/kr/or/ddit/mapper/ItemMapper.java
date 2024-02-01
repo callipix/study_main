@@ -15,4 +15,6 @@ public interface ItemMapper {
 
 	public int insertAttach(AttachVO attachVO);
 
+	public Item3VO detail3(int itemId);
+
 }

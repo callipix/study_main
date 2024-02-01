@@ -31,7 +31,8 @@
 	</insert>
 
 	<insert id="registerPost3" parameterType="item3VO">
-		<selectKey resultType="int" order="BEFORE" keyProperty="itemId">
+		<selectKey resultType="int" order="BEFORE"
+			keyProperty="itemId">
 			select NVL(max(item_id) , 0) + 1 from item3
 		</selectKey>
 		insert into item3( ITEM_ID, ITEM_NAME, PRICE, DESCRIPTION )
@@ -42,7 +43,29 @@
 	<!-- AttachVO[itemId=1 , seq=1,pictureUrl=웹경로 , pictureSize=123443,pictureType=image/jped,regDate=null] -->
 	<insert id="insertAttach" parameterType="attachVO">
 		insert into attach (ITEM_ID, SEQ, PICTURE_URL, PICTURE_SIZE, PICTURE_TYPE, REG_DATE)
-		values( #{itemId}, #{seq}, #{pictureUrl} ,#{pictureSize} , #{pictureType}, sysdate)
+		values ( #{itemId}, #{seq}, #{pictureUrl} ,#{pictureSize} ,	#{pictureType}, sysdate)
 	</insert>
 	
+	<resultMap type="item3VO" id="item3Map">
+		<result property="itemId" column="ITEM_ID" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="price" column="PRICE" />
+		<result property="description" column="DESCRIPTION" />
+		
+		<collection property="attachVOList" resultMap="attachMap"></collection>
+	</resultMap>
+	
+	<resultMap type="attachVO" id="attachMap">
+		<result property="seq" column="SEQ" />
+		<result property="pictureUrl" column="PICTURE_URL" />
+		<result property="pictureSize" column="PICTURE_SIZE" />
+		<result property="pictureType" column="PICTURE_TYPE" />
+		<result property="regDate" column="REG_DATE" />
+	</resultMap>
+
+	<select id="detail3" parameterType="int" resultMap="item3Map">
+		select a.item_id , a.item_name , a.price , a.description , b.seq , b.picture_url , b.picture_size , b.picture_type , b.reg_date
+ 		  from item3 a left outer join attach b on (a.item_id = b.item_id)
+		 where a.item_id = #{itemId}
+	</select>
 </mapper>

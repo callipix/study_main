@@ -10,9 +10,12 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.service.ItemService;
@@ -32,6 +35,11 @@ public class ItemController {
 	String uploadFolder;
 	@Autowired
 	ItemService itemService;
+	
+	@ModelAttribute
+	public void addAttributes(Model model) {
+		model.addAttribute("item3VO" , new Item3VO());
+	}
 /*
 요청URI : /item/register
 요청파라미터 :
@@ -188,14 +196,17 @@ public class ItemController {
 		   //redirect : url 재요청
 		   return "redirect:/item/detail2?itemId="+item2VO.getItemId();
 	   }
-/*
-요청URI : /item/registerPost3
-요청파라미터 : {itemName=삼성태블릿,price=120000,description=쓸만함
-         ,uploadFile=파일객체들}
-요청방식 : post
- */
-	   @PostMapping("/registerPost3")
-	   public String registerPost3(Item3VO item3VO) {
+	   /*
+	   요청URI : /item/registerAjaxPost3
+	   요청파라미터(formData) : {itemName=삼성태블릿,price=120000,description=쓸만함
+	            ,uploadFile=파일객체들}
+	   요청방식 : post
+	   
+	   !!formData로 오면 @RequestBody를 안씀
+	   */
+	   @ResponseBody
+	   @PostMapping("/registerAjaxPost3")
+	   public int registerAjaxPost3(Item3VO item3VO) {
 		   
 		   log.info("registerPost3 -> item3VO : " + item3VO);
 		   
@@ -208,6 +219,24 @@ public class ItemController {
 		   int result = this.itemService.registerPost3(item3VO);
 		   		   
 		   log.info("registerPost3 -> result : " + result);
+		   return result;
+	   }
+	   
+	   @PostMapping("/registerPost3")
+	   public String registerPost3(Item3VO item3VO) {
+		   
+		   log.info("registerPost3 -> item3VO : " + item3VO);
+		   
+		   File uploadPath = new File(uploadFolder , getFolder());
+		   
+		   //연월일 폴더 생성 실행
+		   if(uploadPath.exists() == false) {
+			   uploadPath.mkdirs();
+		   }
+		   int result = this.itemService.registerPost3(item3VO);
+		   
+		   log.info("registerPost3 -> result : " + result);
+		   
 		   return "redirect:/item/detail3?itemId="+item3VO.getItemId();
 	   }
 	
@@ -227,4 +256,21 @@ public class ItemController {
 	      //이 파일이 이미지가 아닐 경우
 	      return false;
 	   }  
+	   /*
+	    요청URI : /item/detail3?itemId=3
+	    요청파라미터 : itemId=3
+	    요청방식 : get
+	    */
+	   @GetMapping("/detail3")
+	   public String detail3(int itemId, Model model) {
+		   
+		   log.info("detail3 -> itemId : " + itemId);
+		   //resultMap 사용하기(Item3(1)과 attach(N) 조인)
+		   Item3VO item3VO = this.itemService.detail3(itemId);
+		   log.info("detail3 -> item3VO : " + item3VO);
+		   
+		   model.addAttribute("item3VO" , item3VO);
+		   
+		   return "item/detail3";
+	   }
 }

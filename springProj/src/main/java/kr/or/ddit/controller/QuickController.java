@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.ddit.service.QuickService;
 import kr.or.ddit.vo.QuickVO;
@@ -18,7 +19,6 @@ public class QuickController {
 
 	@Autowired
 	QuickService quickService;
-
 	/**
 	Quick 폼화면
 	 * @return
@@ -38,16 +38,17 @@ public class QuickController {
 		
 		registerId : admin
 	 */
-	@PostMapping("/createPost")
-	public String createPost(QuickVO quickVO) {
+	@ResponseBody
+	@PostMapping("/createAjaxPost")
+	public int createPost(QuickVO quickVO) {
 		
 		log.info("quickVO : " + quickVO);
-		
+		quickVO.setUpdaterId("admin");
 		int result = this.quickService.createPost(quickVO);
 		log.info("result : " + result);
-		return "redirect:/quick/detail?emailAdres="+quickVO.getEmailAdres();
+		return result;
 	}
-/**
+/*
   * 요청URI : /quick/detail
 	요청파라미터 : {emailAdres=test@test.com}
 	요청방식 : get

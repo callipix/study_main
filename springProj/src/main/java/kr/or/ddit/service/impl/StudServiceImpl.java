@@ -17,7 +17,7 @@ import kr.or.ddit.vo.StudVO;
 public class StudServiceImpl implements StudService {
 
 	//DI(의존성 주입)
-	//IoC(제어의 역전)
+	//IoC(제어 역전)
 	@Autowired
 	StudDao studDao;
 	

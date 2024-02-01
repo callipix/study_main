@@ -35,6 +35,13 @@ public class ItemServiceImpl implements ItemService {
 	public int registerPost2(Item2VO item2VO) {
 		return this.itemMapper.registerPost2(item2VO);
 	}
+	
+
+	@Override
+	public Item3VO detail3(int itemId) {
+		
+		return this.itemMapper.detail3(itemId);
+	}
 
 	@Override
 	public int registerPost3(Item3VO item3VO) {
@@ -119,4 +126,5 @@ public class ItemServiceImpl implements ItemService {
 
 		// file.separator -> 파일 이름 구분자 (2024\\01\\30)
 	}
+
 }
