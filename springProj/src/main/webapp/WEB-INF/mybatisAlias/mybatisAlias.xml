@@ -26,5 +26,7 @@
 		<typeAlias type="kr.or.ddit.vo.AttachVO" alias="attachVO" />
 		<typeAlias type="kr.or.ddit.vo.QuickVO" alias="quickVO" />
 		<typeAlias type="kr.or.ddit.vo.QuickAttachVO" alias="quickAttachVO" />
+		<typeAlias type="kr.or.ddit.vo.CardVO" alias="cardVO" />
+		<typeAlias type="kr.or.ddit.vo.LikesVO" alias="likesVO" />
 	</typeAliases>
 </configuration>

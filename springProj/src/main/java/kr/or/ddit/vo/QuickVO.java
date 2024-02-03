@@ -18,7 +18,13 @@ public class QuickVO {
 	private Date updateDt;
 	
 	private MultipartFile[] uploadFile;
+	
 	// QUICK : QUICK_ATTACH = 1 : N 
 	private List<QuickAttachVO> quickAttachVOList;
 
+	// QUICK : CARD = 1 : N QuickVO 테이블에 추가
+	private List<CardVO> cardVOList;
+	
+	// QUICK : LIKES = 1 : N QuickVO 테이블에 추가
+	private List<LikesVO> likesVOList;
 }

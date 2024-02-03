@@ -4,7 +4,8 @@
 	<div class="card-header">
 		<h3 class="card-title">Horizontal Form</h3>
 	</div>
-
+	
+	<form>
 		<div class="card-body">
 			<div class="form-group row">
 				<label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>

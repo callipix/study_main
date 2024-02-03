@@ -8,7 +8,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import jdk.nashorn.internal.runtime.logging.Logger;
 
 @Logger
-public class register {
+public class Register {
 
 	public String getUserIp() throws Exception {
 

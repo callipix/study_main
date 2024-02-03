@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.mapper.QuickMapper;
 import kr.or.ddit.service.QuickService;
+import kr.or.ddit.vo.CardVO;
+import kr.or.ddit.vo.LikesVO;
 import kr.or.ddit.vo.QuickAttachVO;
 import kr.or.ddit.vo.QuickVO;
 import lombok.extern.slf4j.Slf4j;
@@ -69,7 +72,6 @@ public class QuickServiceImpl implements QuickService {
 			// File객체 설계(어디로 복사할것인지? 경로)
 			File saveFile = new File(uploadFolder + "\\" + getFolder(), uploadFileName);
 
-			
 			try {
 				// 파일 복사 실행
 				// 파일객체.복사하겠다To(saveFile)
@@ -94,6 +96,31 @@ public class QuickServiceImpl implements QuickService {
 			} catch (IllegalStateException | IOException e) {
 				log.error(e.getMessage());
 			}
+		}// end for
+		
+		//CARD 테이블에 insert
+		/*
+		cardVOList = [
+			CardVO(no=1 , validMonth=20240208, emailAdre=null),
+			CardVO(no=2 , validMonth=20240208, emailAdre=null),
+		]
+		 */
+		List<CardVO> cardVOList = quickVO.getCardVOList();
+		
+		for(CardVO cardVO : cardVOList) { 
+			//CardVO(no=2 , validMonth=20240208, emailAdre=test@test.com)
+			cardVO.setEmailAdres(quickVO.getEmailAdres());	//부모의 기본키 데이터 -> 자식의 외래키 데이터
+			//CARD테이블에 insert
+			result += this.quickMapper.insertCard(cardVO);
+		}
+		
+		
+		List<LikesVO> likesVOList = quickVO.getLikesVOList();
+		
+		for(LikesVO likesVO : likesVOList) {
+			likesVO.setEmailAdres(quickVO.getEmailAdres());
+			result += this.quickMapper.insertLikes(likesVO);
+			
 		}
 
 		return result;

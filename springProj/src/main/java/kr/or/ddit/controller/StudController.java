@@ -128,12 +128,13 @@ public class StudController {
 		log.info("studId : " + studId);
 		
 		int result = this.studService.createDelete(studId);
+
 		log.info("createDelete->result : " + result);
+		log.info("studVO(result) : " + studVO);
 		
 		//redirect : URI 재요청
 		return "redirect:/stud/list";		
 	}
-	
 	/*
 	 요청URI : /stud/list
 	 요청파라미터 : 

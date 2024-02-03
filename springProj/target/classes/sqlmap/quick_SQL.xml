@@ -8,9 +8,8 @@
 	</insert>
 
 	<insert id="insertQuickAttach" parameterType="quickAttachVO">
-		INSERT INTO
-		QUICK_ATTACH(ITEM_ID, SEQ, PICTURE_URL, PICTURE_SIZE, PICTURE_TYPE,	REG_DATE)
-		VALUES(#{itemId}, #{seq}, #{pictureUrl}, #{pictureSize}, #{pictureType}, SYSDATE)
+		INSERT INTO	QUICK_ATTACH(ITEM_ID, SEQ, PICTURE_URL, PICTURE_SIZE, PICTURE_TYPE,	REG_DATE)
+		VALUES (#{itemId}, #{seq}, #{pictureUrl}, #{pictureSize}, #{pictureType}, SYSDATE)
 	</insert>
 	<!-- 오라클 카멜변환기에서 resultMap과 같음 -->
 	<!-- 최종적으로 리턴 -> quickMap -->
@@ -42,4 +41,20 @@
 		  FROM  QUICK A LEFT OUTER JOIN QUICK_ATTACH B ON(A.EMAIL_ADRES = B.ITEM_ID)
 		 WHERE  A.EMAIL_ADRES = #{emailAdres}
 	</select>
+	
+	<!-- CardVO(no=2 , validMonth=20240208, emailAdre=test@test.com) -->
+	<insert id="insertCard" parameterType="cardVO">
+		insert into card(no , valid_month ,email_adres)
+		values (#{no} , #{validMonth} , #{emailAdres})
+	</insert>
+	
+	<insert id="insertLikes" parameterType="likesVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="likesCode">
+			SELECT NVL(SUBSTR(MAX(LIKES_CODE),1,3) || TRIM(TO_CHAR(SUBSTR(MAX(LIKES_CODE),4)+1,'000')),'LKS001')
+			  FROM LIKES		
+		</selectKey>
+	
+		insert into likes(LIKES_CODE, LIKES_TITLE, LIKES_CONT, EMAIL_ADRES)
+		values (#{likesCode} , #{likesTitle} , #{likesCont} , #{emailAdres})
+	</insert>
 </mapper>

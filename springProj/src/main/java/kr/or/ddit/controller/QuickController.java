@@ -33,20 +33,31 @@ public class QuickController {
 		요청 URI : /quick/createPost
 		요청파라미터 : {emailAdres=test@test.com,password=java,uploadFile=파일객체}
 		요청방식 : post
-		
 		부모테이블(QUICK) : 자식테이블(QUICK_ATTACH) = 1 : N
-		
 		registerId : admin
 	 */
 	@ResponseBody
 	@PostMapping("/createAjaxPost")
-	public int createPost(QuickVO quickVO) {
+	public int createAjaxPost(QuickVO quickVO) {
 		
-		log.info("quickVO : " + quickVO);
+		log.info("quickVO1 : " + quickVO);
 		quickVO.setUpdaterId("admin");
 		int result = this.quickService.createPost(quickVO);
 		log.info("result : " + result);
 		return result;
+	}
+	
+	@PostMapping("/createPost")
+	public String createPost(QuickVO quickVO) {
+		
+		log.info("quickVO : " + quickVO);
+		quickVO.setUpdaterId("admin");
+		int result = this.quickService.createPost(quickVO);
+		log.info("createPost -> result : " + result);
+		
+		log.info("createPost -> quickVO : " + quickVO);
+		
+		return "redirect:/quick/detail?emailAdres="+quickVO.getEmailAdres();
 	}
 /*
   * 요청URI : /quick/detail

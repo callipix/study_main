@@ -25,9 +25,8 @@ $(function(){
 	
 });
 </script>
-
 <div class="card card-primary">
-<p>${quickVO}</p>
+<%-- <p>${quickVO}</p> --%>
 	<div class="card-header">
 		<h3 class="card-title">Quick Example</h3>
 	</div>
@@ -72,7 +71,7 @@ $(function(){
                   </div>
                </c:forEach>
             </div>
-            </div>
+        </div>
 
 		<div class="card-footer">
 			<button type="submit" class="btn btn-primary">Submit</button>
