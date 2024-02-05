@@ -40,11 +40,21 @@ model{studVO=학생객체}
 		<tr>
 			<th>학생 명</th>
 			<!-- name 및 id 속성이 path속성으로 합쳐짐 -->
-			<td><form:input path="studNm" /></td>
+			<td>
+				<form:input path="studNm" />
+				<font color="red">
+					<form:errors path="studNm" />
+				</font>
+			</td>
 		</tr>
 		<tr>
 			<th>학생 비밀번호</th>
-			<td><form:password path="studPw" /></td>
+			<!-- 포워딩 되면 바인딩 된 에러메시지가 출력된다 -->
+			<td><form:password path="studPw" />
+				<font color="red">
+					<form:errors path="studPw" />
+				</font>
+			</td>
 		</tr>
 		<tr>
 			<th>학생 상세정보</th>
@@ -88,6 +98,11 @@ model{studVO=학생객체}
 	</table>
 	<!-- form:button은 기본 type이 submit -->
 	<form:button name="register">등록</form:button>
+	<!-- ↕↕↕↕↕↕↕ 동일
+	<button type="submit">등록</button>
+	<input type="submit" value="등록" />
+	 ↕↕↕↕↕↕↕ 동일
+	 -->
 	<button type="button" id="btnSubmit02">register02로전송</button>
 	<button type="button" id="btnSubmit03">register03로전송</button>
 	<button type="button" id="btnSubmit05">register05로전송</button>

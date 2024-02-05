@@ -83,7 +83,7 @@
 			</exclusions>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -210,6 +210,25 @@
 			<version>3.0.8</version>
 		</dependency>
 		<!-- 타일즈 끝 -->
+
+		<!-- 입력값을 검증하기 위한 라이브러리 의존 관계 정의 시작
+			 스프링
+			M(Model) : Service, ServiceImple, Mapper
+			V(View) : JSP
+			C(Controller) : Controller
+			Bean(자바빈 클래스, ArticleVO) Validation(유효성검사) 기능을 이용해
+			요청 파라미터 값이 바인딩된(멤버변수에 세팅된) 도메인 클래스(ArticleVO)의 입력값 검증을 함
+			요청 파라미터 : ?articleNo=112&title=개똥이
+			public String write(골뱅이ModelAttribute ArticleVO articleVO) -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.2.5.Final</version>
+		</dependency>
+
+		<!-- 입력값을 검증하기 위한 라이브러리 의존 관계 정의 끝 -->
+
 		<!-- json 데이터 바인딩을 위한 의존 라이브러리 시작 -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
@@ -297,6 +316,12 @@
 			<version>0.4.8</version>
 		</dependency>
 		<!-- 파일업로드 끝 -->
+		
+		<dependency>
+  <groupId>com.jcabi</groupId>
+  <artifactId>jcabi-log</artifactId>
+  <version>0.17.1</version>
+</dependency>
 
 	</dependencies>
 	<build>
@@ -320,8 +345,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>

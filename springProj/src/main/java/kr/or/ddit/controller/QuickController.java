@@ -1,9 +1,16 @@
 package kr.or.ddit.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +31,8 @@ public class QuickController {
 	 * @return
 	 */
 	@GetMapping("/create")
-	public String create() {
+	public String create(@ModelAttribute("quickVO") QuickVO quickVO) {
+		// <form:form modelAttribute="quickVO"
 		// forwarding : jsp
 		
 		return "quick/create";	// quick/create폴더
@@ -48,19 +56,44 @@ public class QuickController {
 	}
 	
 	@PostMapping("/createPost")
-	public String createPost(QuickVO quickVO) {
+	public String createPost(@Validated QuickVO quickVO , BindingResult brResult) {
 		
-		log.info("quickVO : " + quickVO);
 		quickVO.setUpdaterId("admin");
+		log.info("createPost -> quickVO : " + quickVO);
+		log.error("BindingResult : " + brResult.hasErrors());//true : 오류발생 , false : 오류없음
+		
+		//오류가 발생한다면
+		if(brResult.hasErrors()) {
+			//검사 결과 오류 확인
+			List<ObjectError> allErrors = brResult.getAllErrors();
+			//객체와 관련된 오류
+			List<ObjectError> globalErrors = brResult.getGlobalErrors();
+			//멤버변수와 관련된 오류
+			List<FieldError> fieldErrors = brResult.getFieldErrors();
+        
+	        for(ObjectError objectError : allErrors) {
+	           log.info("allError : " + objectError);
+	        }
+	        
+	        for(ObjectError objectError : globalErrors) {
+	           log.info("globalError : " + objectError);
+	        }
+	        
+	        for(FieldError fieldError: fieldErrors) {
+	           log.info("fieldError : " + fieldError.getDefaultMessage());
+	        }
+		
+	        // redirect로는 brResult가 전달되지 않고 , forwarding일때만 바인딩 오류 정보가 넘겨짐
+	        return "quick/create";	// if문 아래는 실행하지 않는다
+		}
+
 		int result = this.quickService.createPost(quickVO);
 		log.info("createPost -> result : " + result);
-		
-		log.info("createPost -> quickVO : " + quickVO);
 		
 		return "redirect:/quick/detail?emailAdres="+quickVO.getEmailAdres();
 	}
 /*
-  * 요청URI : /quick/detail
+	요청URI : /quick/detail
 	요청파라미터 : {emailAdres=test@test.com}
 	요청방식 : get
 */

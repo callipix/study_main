@@ -10,9 +10,9 @@ $(function(){
 		let pictureUrl = $(this).data("pictureUrl");
 		console.log("pictureUrl : " + pictureUrl);
 		
-		$(".modalPicBody > p").html("<img src='/resources/upload"+pictureUrl +"' style='width:100%' />");	//자식 태그로 접근(modalPicBody 의 자식요소)
+		$(".modalPicBody > p").html("<img src='/resources/upload"+pictureUrl +"' style='width:100%' />");	// 자식 태그로 접근(modalPicBody 의 자식요소)
 		
-		//modalPicTitle을 이미지 명으로 처리해보자
+//		modalPicTitle을 이미지 명으로 처리해보자
 //		let test = pictureUrl.split("_");
 //		$(".modalPicTitle").html(test[1]);
 		

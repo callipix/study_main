@@ -31,6 +31,10 @@
 		<constructor-arg value="C:\Users\PC-12\git\repository\springProj\src\main\webapp\resources\upload"></constructor-arg>
 	</bean>
 	
+	<bean id="uploadFolderDirect" class="java.lang.String">
+      <constructor-arg value="C:\\eGovFrameDev-3.10.0-64bit\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\springProj\\resources\\upload"></constructor-arg>
+   </bean>
+	
 	<bean id="dataSource" 
 		class="org.apache.commons.dbcp2.BasicDataSource" 
 		destroy-method="close">

@@ -1,10 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> 
 <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
 <script type="text/javascript">
-<%= 3/0 %>
 $(function(){
+	// 자동입력
+	$("#btnAuto").on("click" , function () {
+		console.log("자동입력버튼 클릭")
+		$("#emailAdres").val("test@test.com");
+		$("#password").val("java");
+		$("#no1").val("1111-1111-1111-1111");
+		$("#validMonth1").val("202408");
+		$("#no2").val("2222-2222-2222-2222");
+		$("#validMonth2").val("202508");
+		$("#likesTitle1").val("운동");
+		$("#likesCont1").val("야구");
+		$("#likesTitle2").val("독서");
+		$("#likesCont2").val("추리소설");
+	});
+	
 	// 카드 + / - 잘체크!
 	$(".divCardAdd").on("click" , function () {
 		console.log("카드 추가");
@@ -36,7 +51,7 @@ $(function(){
 		
 		let len = $(".clsNo").length;
 		
-		if(len<2){
+		if(len < 2){
 			alert("최소 한개 이상의 카드가 있어야함");
 		} else{
 			$("#divCard").children().last().remove();
@@ -198,18 +213,24 @@ $(function(){
 요청파라미터 : {emailAdres=test@test.com,password=java,uploadFile=파일객체}
 요청방식 : post
  -->
-	<form action="/quick/createPost?${_csrf.parameterName}=${_csrf.token}"
+ <form:form modelAttribute="quickVO" action="/quick/createPost?${_csrf.parameterName}=${_csrf.token}"
 		method="post" enctype="multipart/form-data">
 		<div class="card-body">
 			<div class="form-group">
 				<label for="exampleInputEmail1">Email address</label>
-				<input type="email" class="form-control" name="emailAdres" id="emailAdres"
-					value="${quickVO.emailAdres}" placeholder="이메일" required="required" />
+				<!--  form:input => input type = "text" -->
+				<form:input class="form-control" path="emailAdres" placeholder="이메일" />
+				<font color="red">
+					<form:errors path="emailAdres" />
+				</font>
 			</div>
 			<div class="form-group">
 				<label for="exampleInputPassword1">Password</label>
-				<input type="password" class="form-control" name="password" id="password"
-					placeholder="비밀번호" required="required" />
+				<!--  form:password => input type="password" -->
+				<form:password class="form-control" path="password" placeholder="비밀번호" />
+					<font color="red">
+						<form:errors path="password" />
+					</font>
 			</div>
 			<div class="form-group">
 				<label for="exampleInputFile">File input</label>
@@ -227,12 +248,12 @@ $(function(){
 					<div style="width: 50%; float: left;">
 						<label for="exampleInputEmail1">카드번호</label>
 						<input type="text" class="form-control clsNo" name="cardVOList[0].no"
-							id="emailAdres" placeholder="카드번호" />
+							id="no1" placeholder="카드번호" />
 					</div>
 					<div style="width: 50%; float: left;">
 						<label for="exampleInputEmail1">유효연월</label>
 						<input type="text" class="form-control clsValidMonth"
-							name="cardVOList[0].validMonth" id="emailAdres"
+							name="cardVOList[0].validMonth" id="validMonth1"
 							placeholder="유효연월" />
 					</div>
 				</div>
@@ -241,12 +262,12 @@ $(function(){
 					<div style="width: 50%; float: left;">
 						<label for="exampleInputEmail1">카드번호</label>
 						<input type="text" class="form-control clsNo" name="cardVOList[1].no"
-							id="emailAdres" placeholder="카드번호" />
+							id="no2" placeholder="카드번호" />
 					</div>
 					<div style="width: 50%; float: left;">
 						<label for="exampleInputEmail1">유효연월</label>
 						 <input type="text" class="form-control clsValidMonth"
-							name="cardVOList[1].validMonth" id="emailAdres"
+							name="cardVOList[1].validMonth" id="validMonth2"
 							placeholder="유효연월" />
 					</div>
 				</div>
@@ -320,10 +341,11 @@ $(function(){
 		<hr />
 
 		<div class="card-footer">
-		<!-- ajax 인지 submit인지 잘 체크!! -->
-<!-- 			<button type="submit" class="btn btn-primary">등록</button> -->
-			<button type="button" id="btnAjaxSubmit" class="btn btn-primary">등록</button>
+		<!-- ajax(button) 인지 submit인지 잘 체크!! -->
+			<button type="submit" class="btn btn-primary">등록</button>
+			<button type="button" id="btnAuto" class="btn btn-primary">자동입력</button>
+<!-- 			<button type="button" id="btnAjaxSubmit" class="btn btn-primary">등록</button> -->
 		</div>
 		<sec:csrfInput />
-	</form>
+	 </form:form>
 </div>

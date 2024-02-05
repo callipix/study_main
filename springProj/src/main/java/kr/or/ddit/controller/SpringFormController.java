@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,15 +73,20 @@ public class SpringFormController {
 	*/
 	//2. 컨트롤러 메서드의 매개변수로 자바빈즈 객체가 전달이 되면 
 	//	  forwarding하는 JSP에 다시 화면으로 전달함
+	// 입력값 검증을 할 도메인 클래스(StudVO)에 @Validated를 지정함
+	// 입력값 검증 대상의 도메인 클래스 직후에 BindingResult를 정의함
+	// BindingResult에는 요청 파라미터 데이터의 바인딩(set..) 오류와 입력값 검증 오류 정보가 저장됨
+	// result.hasErrors() : 바인딩 도중 오류 발생 시 true를 반환함
 	@PostMapping("/register")
-	public String register(StudVO studVO) {
+	public String register(@Validated StudVO studVO , BindingResult result) {
 		//StudVO[studId=a005,studNm=개똥이,studPw=java, enabled=null
 		//	, studDet=상세정보, hobby=[sports,movie], hobbyVOList=null
 		//  , gender=female, nationality=korea]
 		log.info("register : " + studVO);
+		log.error("바인딩 result : " + result.hasErrors());
 		
-		int result = this.service.register(studVO);
-		log.info("register->result : " + result);
+//		int result = this.service.register(studVO);
+//		log.info("register->result : " + result); // true(오류발생) , false(오류없음)
 		
 		//forwarding
 		return "springform/registerForm";

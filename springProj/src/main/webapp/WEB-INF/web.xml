@@ -35,6 +35,14 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml
 			</param-value>
 		</init-param>
+		
+		<!-- 404 오류를 처리할 수 있도록 설정 시작 -->
+      <init-param>
+         <param-name>throwExceptionIfNoHandlerFound</param-name>
+         <param-value>true</param-value>
+      </init-param>
+		<!-- 404 오류를 처리할 수 있도록 설정 끝 -->
+		
 		<load-on-startup>1</load-on-startup>
 
 		<!-- web.xml의 설정은 WAS(Tomcat) 자체 설정일 뿐임. -->
@@ -102,10 +110,12 @@
 		<error-code>400</error-code>
 		<location>/error/error400</location>
 	</error-page>
+	
 	<error-page>
 		<error-code>404</error-code>
 		<location>/error/error404</location>
 	</error-page>
+	
 	<error-page>
 		<error-code>500</error-code>
 		<location>/error/error500</location>
@@ -118,7 +128,7 @@
 		IOException, SQLException, NullPointerException, ArrayIndexOutOfBoundsException, ArtimeticException(0으로 
 		나눌경우) -->
 	<error-page>
-		<exception-type>java.lang.Exception</exception-type>
+		<exception-type>java.lang.ArithmeticException</exception-type>
 		<location>/error/errorException</location>
 	</error-page>
 	<!-- 예외 타입을 사용하여 오류 페이지 설정 시작 -->

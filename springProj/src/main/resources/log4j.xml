@@ -9,10 +9,10 @@
 			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
 		</layout>
 	</appender>
-	
+		
 	<!-- Application Loggers -->
 	<logger name="kr.or.ddit">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
