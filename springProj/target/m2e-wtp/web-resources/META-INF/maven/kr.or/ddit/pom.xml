@@ -211,15 +211,11 @@
 		</dependency>
 		<!-- 타일즈 끝 -->
 
-		<!-- 입력값을 검증하기 위한 라이브러리 의존 관계 정의 시작
-			 스프링
-			M(Model) : Service, ServiceImple, Mapper
-			V(View) : JSP
-			C(Controller) : Controller
-			Bean(자바빈 클래스, ArticleVO) Validation(유효성검사) 기능을 이용해
-			요청 파라미터 값이 바인딩된(멤버변수에 세팅된) 도메인 클래스(ArticleVO)의 입력값 검증을 함
-			요청 파라미터 : ?articleNo=112&title=개똥이
-			public String write(골뱅이ModelAttribute ArticleVO articleVO) -->
+		<!-- 입력값을 검증하기 위한 라이브러리 의존 관계 정의 시작 스프링 M(Model) : Service, ServiceImple, 
+			Mapper V(View) : JSP C(Controller) : Controller Bean(자바빈 클래스, ArticleVO) 
+			Validation(유효성검사) 기능을 이용해 요청 파라미터 값이 바인딩된(멤버변수에 세팅된) 도메인 클래스(ArticleVO)의 
+			입력값 검증을 함 요청 파라미터 : ?articleNo=112&title=개똥이 public String write(골뱅이ModelAttribute 
+			ArticleVO articleVO) -->
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -316,12 +312,33 @@
 			<version>0.4.8</version>
 		</dependency>
 		<!-- 파일업로드 끝 -->
-		
+
 		<dependency>
-  <groupId>com.jcabi</groupId>
-  <artifactId>jcabi-log</artifactId>
-  <version>0.17.1</version>
-</dependency>
+			<groupId>com.jcabi</groupId>
+			<artifactId>jcabi-log</artifactId>
+			<version>0.17.1</version>
+		</dependency>
+
+		<!-- AOP(Aspect Oriented Programming : 관점 지향 프로그래밍)
+		 시작
+		  1) aspectjrt => 		이미 있으므로 생략
+		  2) aspectjweaver => 없으므로 의존 관계를 정의 -->
+		<!-- https://mvnrepository.com/artifact/aspectj/aspectjweaver 1.5.4 -->
+		<!-- AspectJ RunTime -->
+		
+		<!-- AspectJ Weaver -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		<!-- AspectJ Tools -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		<!-- AOP(Aspect Oriented Programming : 관점 지향 프로그래밍) 끝 -->
 
 	</dependencies>
 	<build>

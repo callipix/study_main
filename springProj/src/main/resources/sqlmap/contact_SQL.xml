@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.ddit.mapper.ContactMapper">
+<mapper namespace="kr.or.ddit.mapper.ContactInfoMapper">
+
+	<!-- mapper인터페이스의 메소드명과 mapper xml의 id와 동일 -->
 	<insert id="insert" parameterType="contactInfoVO">
 		<selectKey resultType="String" order="BEFORE" keyProperty="ciCd">
-			SELECT NVL(SUBSTR(MAX(CI_CD),1,3) || TRIM(TO_CHAR(SUBSTR(MAX(CI_CD),4)+1,'000')),'CI001')
-			  FROM contact_info
+			SELECT NVL(SUBSTR(MAX(CI_CD),1,10) || TRIM(TO_CHAR(SUBSTR(MAX(CI_CD),-3)+1,'000')),
+   			     'CI' || TO_CHAR(SYSDATE,'YYYYMMDD') || '001')
+			FROM   CONTACT_INFO
+			WHERE  CI_CD LIKE 'CI' || TO_CHAR(SYSDATE,'YYYYMMDD') || '%'
 		</selectKey>
+
 		insert into contact_info (CI_CD, CI_NAME, CI_MAIL, CI_SUBJ, CI_IMG_URL, CI_MESG, CI_REG_DT, REGISTER_ID, REGIST_DT)
-		values(#{ciCd} ,#{ciName} , #{ciMail} , #{ciSubj} , #{ciImgUrl} ,#{ciMesg} , #{ciRegDt} , #{registerId} , sysdate)
+		values(#{ciCd} ,#{ciName} , #{ciMail} , #{ciSubj} , #{ciImgUrl} ,#{ciMesg} , #{ciRegDt} , 'admin' , sysdate)
 	</insert>
+	
+	<resultMap type="contactInfoVO" id="contactInfoMap">
+		<result property="ciCd" column="CI_CD"/>
+		<result property="ciName" column="CI_NAME"/>
+		<result property="ciMail" column="CI_MAIL"/>
+		<result property="ciSubj" column="CI_SUBJ"/>
+		<result property="ciImgUrl" column="CI_IMG_URL"/>
+		<result property="ciMesg" column="CI_MESG" jdbcType="CLOB" javaType="java.lang.String"/>
+		<result property="ciRegDt" column="CI_REG_DT"/>
+		<result property="registerId" column="REGISTER_ID"/>
+		<result property="registDt" column="REGIST_DT"/>
+	</resultMap>
+	
+	<!-- 방문 상세 -->
+	<select id="detail" parameterType="String" resultMap="contactInfoMap">
+		select CI_CD, CI_NAME, CI_MAIL, CI_SUBJ, CI_IMG_URL, CI_MESG, CI_REG_DT, REGISTER_ID, REGIST_DT
+		  from contact_info
+		 where ci_cd = #{ciCd}
+	</select>
 
 </mapper>

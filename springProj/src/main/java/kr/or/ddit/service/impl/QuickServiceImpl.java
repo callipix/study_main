@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.mapper.QuickMapper;
@@ -30,6 +31,7 @@ public class QuickServiceImpl implements QuickService {
 	QuickMapper quickMapper;
 
 	@Override
+	@Transactional
 	public int createPost(QuickVO quickVO) {
 		
 		quickVO.setRegisterId("admin");
@@ -113,7 +115,6 @@ public class QuickServiceImpl implements QuickService {
 			//CARD테이블에 insert
 			result += this.quickMapper.insertCard(cardVO);
 		}
-		
 		
 		List<LikesVO> likesVOList = quickVO.getLikesVOList();
 		

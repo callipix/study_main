@@ -36,7 +36,6 @@ public class ItemServiceImpl implements ItemService {
 		return this.itemMapper.registerPost2(item2VO);
 	}
 	
-
 	@Override
 	public Item3VO detail3(int itemId) {
 		
@@ -82,7 +81,7 @@ public class ItemServiceImpl implements ItemService {
 			uploadFileName = uuid.toString() + "_" + uploadFileName;
 
 			// File객체 설계(어디로 복사할것인지? 경로)
-//			File saveFile = new File(uploadFolder , getFolder());
+			// File saveFile = new File(uploadFolder , getFolder());
 			// ↕↕↕↕↕↕ 동일
 			File saveFile = new File(uploadFolder + "\\" +getFolder(), uploadFileName);
 			// 파일 복사 실행

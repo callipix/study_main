@@ -1,6 +1,5 @@
 package kr.or.ddit.vo;
 
-
 import java.util.Date;
 
 import javax.validation.constraints.Future;
@@ -30,7 +29,7 @@ public class ContactInfoVO {
 	private Date ciRegDt;
 	private String registerId;
 	private Date registDt;
-	
-	private MultipartFile uploadFile;
+	//스프링 파일객체
+	private MultipartFile[] uploadFile;
 
 }

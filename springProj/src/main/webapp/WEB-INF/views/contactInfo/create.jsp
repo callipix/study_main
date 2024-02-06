@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>  
 <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/ckeditor5/ckeditor.js"></script>
-<link type="text/css" rel="stylesheet"
+<link type="text/css" rel="stylesheet" 
 	href="/resources/ckeditor5/sample/css/sample.css" media="screen" />
 <script type="text/javascript">
 $(function(){
@@ -78,78 +79,92 @@ $(function(){
 	//이미지 미리보기 끝////////////////
 });
 </script>
+<script type="text/javascript">
+//핸들러함수
+function fn_chk() {
+	
+	if(jQuery.trim($("#ciRegDt").val()) == ""){
+// alert("방문자 예정일을 입력해주세요");
+		$("#codeCiRegDt").html("방문자 예정일을 입력해주세요");
+		return false;	//submit이 안됨
+	}
+	return true;	// submit됨
+}
+</script>
 <!-- 
 요청URI : /contactInfo/createPost
 요청파라미터 : {ciName=개똥이,ciMail=test@test.com,ciSubj=채용상담,ciImgUrl=파일객체,
 		    ciMesg=채용절차에 대한 상담,ciRegDt=2024/02/17}
 요청방식 : post
 -->
-<form id="contactInfoVO" name="contactInfoVO"
-	action="/contactInfo/createPost?${_csrf.parameterName}=${_csrf.token}"
-	method="post" enctype="multipart/form-data">
-	<section class="content">
-		<div class="card">
-			<div class="card-body row">
-				<div
-					class="col-5 text-center d-flex align-items-center justify-content-center clsCiImgUrl">
-					<div class="">
-						<h2>
-							Admin<strong>LTE</strong>
-						</h2>
-						<p class="lead mb-5">
-							123 Testing Ave, Testtown, 9876 NA<br> Phone: +1 234
-							56789012
-						</p>
-					</div>
+<!-- onsubmit : form이 submit될 때 핸들러함수를 거쳐와야 함 -->
+<form:form modelAttribute="contactInfoVO" 
+	action="/contactInfo/createPost?${_csrf.parameterName}=${_csrf.token}" 
+	method="post" enctype="multipart/form-data" onsubmit="return fn_chk()">
+<section class="content">
+	<div class="card">		
+		<div class="card-body row">
+			<div
+				class="col-5 text-center d-flex align-items-center justify-content-center clsCiImgUrl">
+				<div class="">
+					<h2>
+						Admin<strong>LTE</strong>
+					</h2>
+					<p class="lead mb-5">
+						123 Testing Ave, Testtown, 9876 NA<br> Phone: +1 234 56789012
+					</p>
 				</div>
-				<div class="col-7">
-					<div class="form-group">
-						<label for="ciName">방문자 명</label> <input type="text" name="ciName"
-							id="ciName" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label for="ciMail">이메일</label> <input type="email" name="ciMail"
-							id="ciMail" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label for="ciSubj">방문 주제</label> <input type="text" name="ciSubj"
-							id="ciSubj" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label for="uploadFile">방문자 사진</label>
-						<div class="custom-file">
-							<input type="file" name="uploadFile" id="uploadFile"
-								class="custom-file-input" multiple /> <label
-								class="custom-file-label" for="uploadFile">Choose file</label>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="ciMesg">방문 내용</label>
-						<!-- ckeditor가 들어갈 위치 -->
-						<div id="ckCiMesg"></div>
-						<textarea name="ciMesg" id="ciMesg" class="form-control" rows="4"></textarea>
-					</div>
-					<div class="form-group">
-						<label for="ciRegDt">방문자 예정일</label> <input type="date"
-							name="ciRegDt" id="ciRegDt" class="form-control" />
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary">방문 신청</button>
-						<button type="reset" class="btn btn-warning">다시 입력</button>
-						<button type="button" id="btnAuto" class="btn btn-info">자동
-							입력</button>
-					</div>
+			</div>
+			<div class="col-7">
+				<div class="form-group">
+					<label for="ciName">방문자 명</label> 
+					<form:input path="ciName" class="form-control" />
+					<code><form:errors path="ciName" /></code>
+				</div>
+				<div class="form-group">
+					<label for="ciMail">이메일</label> 
+					<form:input path="ciMail" class="form-control" />
+					<code><form:errors path="ciMail" /></code>
+				</div>
+				<div class="form-group">
+					<label for="ciSubj">방문 주제</label> 
+					<form:input path="ciSubj" class="form-control" />
+					<code><form:errors path="ciSubj" /></code>
+				</div>
+				<div class="form-group">
+					<label for="uploadFile">방문자 사진</label>
+					<div class="custom-file">
+						<input type="file" name="uploadFile" id="uploadFile"
+							 class="custom-file-input" />
+						<label class="custom-file-label" for="uploadFile">Choose file</label>
+					</div> 
+				</div>
+				<div class="form-group">
+					<label for="ciMesg">방문 내용</label>
+					<div id="ckCiMesg"></div>
+					<textarea name="ciMesg" id="ciMesg" class="form-control" rows="4"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="ciRegDt">방문자 예정일</label> 
+					<input type="date" name="ciRegDt" id="ciRegDt" class="form-control" />
+<%-- 					<form:input path="ciRegDt" class="form-control" /> --%>
+					<code id="codeCiRegDt"></code>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary">방문 신청</button>
+					<button type="reset" class="btn btn-warning">다시 입력</button>
+					<button type="button" id="btnAuto" class="btn btn-info">자동 입력</button>
 				</div>
 			</div>
 		</div>
-	</section>
-	<sec:csrfInput />
-</form>
+	</div>
+</section>
+<sec:csrfInput />
+</form:form>
 <script type="text/javascript">
-ClassicEditor.create(document.querySelector('#ckCiMesg'),{ckfinder:{uploadUrl:'/upload/uploads?${_csrf.parameterName}=${_csrf.token}'}})
- .then(editor => {window.editor=editor;})
- .catch(err => {console.error(err.stack);});
- 
-// 쿼리셀렉터 ckCiMesg window.editor를 editor로 정의함
-// 에디터가 생성되면 ckCiMesg가 div에 생성되고
+ClassicEditor
+ .create(document.querySelector('#ckCiMesg'),
+		{ckfinder:{uploadUrl:'/upload/uploads?${_csrf.parameterName}=${_csrf.token}'}})
+ .then(editor=>{window.editor=editor;})
+ .catch(err=>{console.error(err.stack);});
 </script>
