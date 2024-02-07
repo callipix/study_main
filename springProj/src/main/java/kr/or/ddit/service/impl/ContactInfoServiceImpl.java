@@ -33,7 +33,6 @@ public class ContactInfoServiceImpl implements ContactInfoService {
 	@Override
 	@Transactional
 	public int insert(ContactInfoVO contactInfoVO) {
-
 		int result = 0;
 //		int result = this.contactMapper.insert(contactInfoVO);
 //		System.out.println("syso : " +contactInfoVO.getCiRegDt());
@@ -55,9 +54,14 @@ public class ContactInfoServiceImpl implements ContactInfoService {
 		
 		for (MultipartFile multipartFile : uploadFile) {
 			// 원본파일명
-			multipartFile.getOriginalFilename();
+			uploadFileName = multipartFile.getOriginalFilename();
 			size = multipartFile.getSize();
 			mime = multipartFile.getContentType();
+			
+			log.info("------------------------------------------");
+			log.info("원본 파일명 : " + multipartFile.getOriginalFilename());
+			log.info("파일 크기    : " + multipartFile.getSize());
+			log.info("MIME타입  : " + multipartFile.getContentType());
 			// UUID_파일명
 			UUID uuid = UUID.randomUUID();
 			uploadFileName = uuid.toString() + "_" + uploadFileName;

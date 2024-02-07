@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.ddit.service.ContactInfoService;
 import kr.or.ddit.vo.ContactInfoVO;
 import lombok.extern.slf4j.Slf4j;
 
-@RequestMapping("/contactInfo")
-@Controller
 @Slf4j
+@Controller
+@RequestMapping("/contactInfo")
 public class ContactInfoController {
 	@Autowired
 	ContactInfoService contactInfoService;
@@ -73,13 +74,23 @@ public class ContactInfoController {
 		
 		return "redirect:/contactInfo/detail?ciCd="+contactInfoVO.getCiCd();
 	}
+	
+	@ResponseBody
+	@PostMapping("/createAjaxPost")
+	public int createAjaxPost(@Validated ContactInfoVO contactInfoVO , BindingResult brResult) {
+		
+		int result = this.contactInfoService.insert(contactInfoVO);
+		
+		return result;
+	}
+	
 	/*
 	   요청URI : /contactInfo/detail
 	   요청파라미터 : ciCd=CI20240206001
 	   요청방식 : get
 	*/
-	// <form:form modelAttribute="contactInfoVO"
 	
+	// <form:form modelAttribute="contactInfoVO"
 	@GetMapping("/detail")
 	public String detail(@RequestParam("ciCd") String ciCd , Model model) {
 		log.info("detail -> contactInfoVO : " + ciCd);

@@ -8,6 +8,48 @@
 	href="/resources/ckeditor5/sample/css/sample.css" media="screen" />
 <script type="text/javascript">
 $(function(){
+	
+	$("#btnAjaxSubmit").on("click" , function () {
+		
+		console.log("ajax테스트")
+		
+		let ciName = $("#ciName").val();
+		let ciMail = $("#ciMail").val();
+		let ciSubj = $("#ciSubj").val();
+		let ciMesg = $("#ciMesg").val();
+		let ciRegDt = $("#ciRegDt").val();
+		let inputImgs = $("#inputImgs");
+		//이미지 파일을 꺼내온다
+		let files = inputImgs[0].files[0];
+		console.log("files" , files);
+		//가상폼 생성<form></form>
+		let formData = new FormData();
+		formData.append("ciName" , ciName);
+		formData.append("ciMail" , ciMail);
+		formData.append("ciSubj" , ciSubj);
+		formData.append("ciMesg" , ciMesg);
+		formData.append("ciRegDt" , ciRegDt);
+		formData.append("uploadFile" , files);
+		
+		$.ajax({
+			url : "/contactInfo/createAjaxPost",
+			processData : false,
+			contentType : false,
+			data : formData,
+			dataType : "text",
+			type : "post",
+			beforeSend:function(xhr){
+				xhr.setRequestHeader("${_csrf.headerName}","${_csrf.token}");
+			},	// beforeSend => 스프링 시큐리티에서 사용시 반드시 작성
+			success : function (result) {
+				console.log("result : " , result);
+			}
+			
+		})
+		
+	});
+	
+	
 	$(".ck-blurred").keyup(function () {	
 		console.log("str : " + window.editor.getData());
 		$("#ciMesg").val(window.editor.getData());
@@ -29,7 +71,7 @@ $(function(){
 	
 	//이미지 미리보기 시작////////////////
 	let sel_file = [];
-	$("#uploadFile").on("change",handleImgFileSelect);
+	$("#inputImgs").on("change",handleImgFileSelect);
 	//e : onchange 이벤트 객체
 	function handleImgFileSelect(e){
 		//이벤트가 발생 된 타겟 안에 들어있는 이미지 파일들을 가져와보자
@@ -131,14 +173,15 @@ function fn_chk() {
 					<form:input path="ciSubj" class="form-control" />
 					<code><form:errors path="ciSubj" /></code>
 				</div>
+				
 				<div class="form-group">
 					<label for="uploadFile">방문자 사진</label>
 					<div class="custom-file">
-						<input type="file" name="uploadFile" id="uploadFile"
-							 class="custom-file-input" />
+						<input type="file" name="uploadFile" id="inputImgs" class="custom-file-input" />
 						<label class="custom-file-label" for="uploadFile">Choose file</label>
 					</div> 
 				</div>
+				
 				<div class="form-group">
 					<label for="ciMesg">방문 내용</label>
 					<div id="ckCiMesg"></div>
@@ -151,7 +194,8 @@ function fn_chk() {
 					<code id="codeCiRegDt"></code>
 				</div>
 				<div class="form-group">
-					<button type="submit" class="btn btn-primary">방문 신청</button>
+<!-- 					<button type="submit" class="btn btn-primary">방문 신청</button> -->
+					<button type="button" id="btnAjaxSubmit" class="btn btn-primary">방문 신청</button>
 					<button type="reset" class="btn btn-warning">다시 입력</button>
 					<button type="button" id="btnAuto" class="btn btn-info">자동 입력</button>
 				</div>

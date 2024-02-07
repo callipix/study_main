@@ -50,7 +50,7 @@ $(function () {
 		let inputImgs = $("#inputImgs"); //파일객체
 		// 이미지 파일들을 꺼내오자
 		let files = inputImgs[0].files;
-		
+		console.log(files[0]);
 		//가상의 폼을 생성 <form></form>
 		let formData = new FormData();
 		formData.append("itemName" , itemName);
