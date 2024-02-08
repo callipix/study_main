@@ -4,7 +4,7 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
-<html>
+<html class>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,6 +30,8 @@
   <link rel="stylesheet" href="/resources/adminlte/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="/resources/adminlte/plugins/summernote/summernote-bs4.min.css">
+  <!-- sweetalert2 -->
+  <link rel="stylesheet" href="/resources/css/sweetalert2.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -119,7 +121,7 @@
 <script src="/resources/adminlte/dist/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/resources/adminlte/dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<!-- <script src="/resources/adminlte/dist/js/pages/dashboard.js"></script> -->
+<!-- sweetalert2 -->
+<script src="/resources/js/sweetalert2.min.js"></script>
 </body>
 </html>

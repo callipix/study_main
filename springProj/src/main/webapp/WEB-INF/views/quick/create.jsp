@@ -18,6 +18,17 @@ $(function(){
 		$("#likesCont1").val("야구");
 		$("#likesTitle2").val("독서");
 		$("#likesCont2").val("추리소설");
+		// success, error, warning, info, question
+		var Toast = Swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000
+			});
+			Toast.fire({
+			icon:'success',
+			title:'자동입력이 완료되었습니다'
+			});
 	});
 	
 	// 카드 + / - 잘체크!

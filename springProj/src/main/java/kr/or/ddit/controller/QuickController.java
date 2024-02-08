@@ -106,5 +106,15 @@ public class QuickController {
 		
 		return "quick/detail";
 	}
+	@ResponseBody
+	@GetMapping("/insertAllTest")
+	public String insertAllTest() {
+		
+		//기능(비즈니스 로직) 을 Imple로 이동
+		int result = this.quickService.insertAllTest();
+		log.info("insertAllTest -> result : " + result);
+		
+		return "success";
+	}
 	
 }

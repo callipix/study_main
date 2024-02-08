@@ -42,19 +42,51 @@
 		 WHERE  A.EMAIL_ADRES = #{emailAdres}
 	</select>
 	
-	<!-- CardVO(no=2 , validMonth=20240208, emailAdre=test@test.com) -->
-	<insert id="insertCard" parameterType="cardVO">
-		insert into card(no , valid_month ,email_adres)
-		values (#{no} , #{validMonth} , #{emailAdres})
-	</insert>
+	<!-- CardVO(no=2 , validMonth=20240208, emailAdre=test@test.com)	
+	INSERT ALL
+	into CARD (NO,VALID_MONTH,EMAIL_ADRES) values ('23543','202312','asda@aazx1312zx121')
+	into CARD (NO,VALID_MONTH,EMAIL_ADRES) values ('23544','202312','asda@aazx1312zx121')
+	SELECT * FROM DUAL;
+
+	List<CardVO>
+	 -->
+	 
+	 <update id="insertCard" parameterType="java.util.List" >
+		<foreach collection="list" item="cardVO"
+		open="INSERT ALL" close="SELECT * FROM DUAL" separator=" " index="idx">
+			INTO CARD(NO, VALID_MONTH, EMAIL_ADRES)
+			VALUES(#{cardVO.no},#{cardVO.validMonth},#{cardVO.emailAdres})
+		</foreach>
+	</update>
+<!-- LikesVO(likesCode=null, likesTitle=운동, likesCont=탁구, emailAdres=test@test.com) -->
+   <update id="insertLikes" parameterType="java.util.List">
+      <selectKey resultType="String" order="BEFORE" keyProperty="likesCode">
+         SELECT NVL(SUBSTR(MAX(LIKES_CODE),1,3) 
+          || TRIM(TO_CHAR(SUBSTR(MAX(LIKES_CODE),4)+1,'000')),'LKS001') FROM LIKES
+      </selectKey>
+   
+      <foreach collection="list" item="likesVO"
+         open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "
+         index="idx">
+         INTO LIKES(LIKES_CODE, LIKES_TITLE, LIKES_CONT, EMAIL_ADRES)
+         VALUES(
+             SUBSTR(#{likesCode},1,3)||(TRIM(TO_CHAR(SUBSTR(#{likesCode},4)+#{idx},'000')))
+             , #{likesVO.likesTitle}
+             , #{likesVO.likesCont}, #{likesVO.emailAdres})
+      </foreach>
+   </update>
 	
-	<insert id="insertLikes" parameterType="likesVO">
-		<selectKey resultType="String" order="BEFORE" keyProperty="likesCode">
-			SELECT NVL(SUBSTR(MAX(LIKES_CODE),1,3) || TRIM(TO_CHAR(SUBSTR(MAX(LIKES_CODE),4)+1,'000')),'LKS001')
-			  FROM LIKES		
-		</selectKey>
+	<update id="insertAllTest" parameterType="java.util.List">
+		<foreach collection="list" item="card2VO" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" " index="idx">
+			into card2(no , valid_month , email_adres)
+			values (#{card2VO.no} , #{card2VO.validMonth} , #{card2VO.emailAdres})
+		</foreach>
+	</update>
 	
-		insert into likes(LIKES_CODE, LIKES_TITLE, LIKES_CONT, EMAIL_ADRES)
-		values (#{likesCode} , #{likesTitle} , #{likesCont} , #{emailAdres})
-	</insert>
+	<update id="insertLikes2" parameterType="java.util.List">
+		<foreach collection="list" item="likes2VO" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" " index="idx">
+			into likes2(LIKES_CODE, LIKES_TITLE, LIKES_CONT, EMAIL_ADRES)
+			values (#{likes2VO.likesCode} , #{likes2VO.likesTitle} ,#{likes2VO.likesCont}, #{likes2VO.emailAdres})
+		</foreach>
+	</update>
 </mapper>

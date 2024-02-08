@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.mapper.QuickMapper;
 import kr.or.ddit.service.QuickService;
+import kr.or.ddit.vo.Card2VO;
 import kr.or.ddit.vo.CardVO;
+import kr.or.ddit.vo.Likes2VO;
 import kr.or.ddit.vo.LikesVO;
 import kr.or.ddit.vo.QuickAttachVO;
 import kr.or.ddit.vo.QuickVO;
@@ -108,21 +111,28 @@ public class QuickServiceImpl implements QuickService {
 		]
 		 */
 		List<CardVO> cardVOList = quickVO.getCardVOList();
+		List<CardVO> cardVOList2 = new ArrayList<CardVO>();
 		
 		for(CardVO cardVO : cardVOList) { 
 			//CardVO(no=2 , validMonth=20240208, emailAdre=test@test.com)
 			cardVO.setEmailAdres(quickVO.getEmailAdres());	//부모의 기본키 데이터 -> 자식의 외래키 데이터
 			//CARD테이블에 insert
-			result += this.quickMapper.insertCard(cardVO);
+//			result += this.quickMapper.insertCard(cardVO);
+			cardVOList2.add(cardVO);
 		}
+		//CARD 테이블에 insert all
+		result += this.quickMapper.insertCard(cardVOList2);
 		
 		List<LikesVO> likesVOList = quickVO.getLikesVOList();
+		List<LikesVO> likesVOList2 = new ArrayList<>();
 		
 		for(LikesVO likesVO : likesVOList) {
-			likesVO.setEmailAdres(quickVO.getEmailAdres());
-			result += this.quickMapper.insertLikes(likesVO);
 			
+			likesVO.setEmailAdres(quickVO.getEmailAdres());
+			// LIKES 테이블에 insert
+			likesVOList2.add(likesVO);
 		}
+		result += this.quickMapper.insertLikes(likesVOList2);
 
 		return result;
 	}
@@ -160,5 +170,52 @@ public class QuickServiceImpl implements QuickService {
 	@Override
 	public QuickVO detail(String emailAdres) {
 		return this.quickMapper.detail(emailAdres);
+	}
+	// db연동 없이 테스트용
+	@Override
+	public int insertAllTest() {
+		//기능(비즈니스 로직) 을 Imple로 이동
+		
+		List<Card2VO> card2VOList = new ArrayList<Card2VO>();
+			
+		Card2VO card2VO = new Card2VO();
+		card2VO.setNo("99");
+		card2VO.setValidMonth("20240903");
+		card2VO.setEmailAdres("test32@test2.com");
+		
+		card2VOList.add(card2VO);
+
+		card2VO = new Card2VO();
+		card2VO.setNo("98");
+		card2VO.setValidMonth("20240904");
+		card2VO.setEmailAdres("test32@test2.com");
+		
+		card2VOList.add(card2VO);
+		// Card2 테이블에 insertAll
+		int result = this.quickMapper.insertAllTest(card2VOList);
+		
+		//LIKES2 테이블에 insertAll	
+		List<Likes2VO> likes2VOList = new ArrayList<>();
+		
+		Likes2VO likes2VO = new Likes2VO();
+		likes2VO.setLikesCode("LKS099");
+		likes2VO.setLikesTitle("운동");
+		likes2VO.setLikesCont("농구");
+		likes2VO.setEmailAdres("test32@test2.com");
+	
+		likes2VOList.add(likes2VO);
+		
+		likes2VO = new Likes2VO();
+		likes2VO.setLikesCode("LKS098");
+		likes2VO.setLikesTitle("운동");
+		likes2VO.setLikesCont("달리기");
+		likes2VO.setEmailAdres("test32@test2.com");
+		
+		likes2VOList.add(likes2VO);
+		
+		result += quickMapper.insertLikes2(likes2VOList);
+		
+		return result;
+		
 	}
 }

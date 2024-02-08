@@ -7,5 +7,8 @@ public interface QuickService {
 	public int createPost(QuickVO quickVO);
 
 	public QuickVO detail(String emailAdres);
+
+	public int insertAllTest();
+	
 	
 }
