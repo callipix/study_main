@@ -299,24 +299,29 @@ $(function(){
 		});
 	});
 	
+	let currentPage ="${param.currentPage}";
+	console.log(currentPage)
 	//아작나써유..(피)씨다타써. HTML(HyperText Markup Language)
 	//ajax : Asynchronous JavaScript And XML(eXtensible Markup Language)
 	$.ajax({
-		url:"/lprod/listAjax",
+		url:"/lprod/listAjax?currentPage="+currentPage,
 		type:"post",
 		dataType:"json",
 		beforeSend:function(xhr){
             xhr.setRequestHeader("${_csrf.headerName}","${_csrf.token}");
          },
 		success:function(result){
+			// 기존 result : List<LprodVO>
+            // 페이징처리 후 result : ArticlePage<LprodVO> data
 			console.log("result : ", result);
 			
 			let str = "";
 			
 			$("#lprodTbody").html("");
 			
-			//result : List<LprodVO>
-			$.each(result,function(idx, lprodVO){
+			//result.content : List<LprodVO>
+			// 페이징처리 후 result : Article
+			$.each(result.content,function(idx, lprodVO){
 				str += "<tr>";
 				str += "<td>"+lprodVO.lprodId+"</td>";
 				str += "<td><a data-lprod-id='"+lprodVO.lprodId+"' class='aModal' data-toggle='modal' href='#modal-sm'>"+lprodVO.lprodGu+"</a></td>";
@@ -325,7 +330,9 @@ $(function(){
 			});
 			
 			$("#lprodTbody").append(str);
-			
+			console.log(result.pagingArea);
+			//페이징 블록 넣기
+			$("#divPagingArea").html(result.pagingArea)
 // 			result.forEach(function(lprodVO){
 // 			});
 		}
@@ -402,6 +409,10 @@ $(function(){
 				</table>
 			</div>
 
+			<div class="row" id="divPagingArea">
+							
+			</div>
+			
 		</div>
 
 	</div>

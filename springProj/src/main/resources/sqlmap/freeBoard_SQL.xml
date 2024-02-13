@@ -17,12 +17,21 @@
 			           LEVEL LVL
 			    FROM FREE_BOARD
 			    START WITH PARENT_NO IS NULL
-			    -- 시작점 설정 => PARENT_ID 값이 NULL이다
 			    CONNECT BY PRIOR FREE_NO = PARENT_NO
 			    ) F
 			)
 			SELECT * FROM T
 			WHERE T.RNUM BETWEEN (#{currentPage} * 10) - (10 - 1) AND (#{currentPage} * 10)
 	</select>
+	
+	<!-- 
+   //전체 행의 수
+   public int getTotal();
+    -->
+    <select id ="getTotal" resultType="int">
+       select count(*)
+       from free_board 
+       where 1 = 1
+    </select>
 	
 </mapper>

@@ -210,6 +210,17 @@ $(function(){
 	//아작났어유..(피)씨다타써
 	//contentType : 보내는 타입
 	//dataType : 응답 타입
+	
+	// currentPage=3;
+	let currentPage = "${param.currentPage}";
+	if(currentPage ==""){
+		currentPage = "1";
+	}
+	let data ={
+			"keyword":"",
+			"currentPage":currentPage
+	};
+	console.log("data : " + data)
 	$.ajax({
 		url:"/stud/listAjax",
 		type:"post",

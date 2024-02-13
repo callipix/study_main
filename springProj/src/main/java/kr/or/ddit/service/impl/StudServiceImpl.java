@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.dao.StudDao;
+import kr.or.ddit.mapper.StudMapper;
 import kr.or.ddit.service.StudService;
 import kr.or.ddit.vo.HobbyVO;
 import kr.or.ddit.vo.StudVO;
@@ -19,36 +20,36 @@ public class StudServiceImpl implements StudService {
 	//DI(의존성 주입)
 	//IoC(제어 역전)
 	@Autowired
-	StudDao studDao;
+	StudMapper studMapper;
 	
 	//학생 등록
 	@Override
 	public int createRegister(StudVO studVO) {
-		return this.studDao.createRegister(studVO);
+		return this.studMapper.createRegister(studVO);
 	}
 
 	//학생 상세
 	@Override
 	public StudVO detail(String studId) {
-		return this.studDao.detail(studId);
+		return this.studMapper.detail(studId);
 	}
 
 	//학생 수정
 	@Override
 	public int createModify(StudVO studVO) {
-		return this.studDao.createModify(studVO);
+		return this.studMapper.createModify(studVO);
 	}
 
 	//학생 삭제
 	@Override
 	public int createDelete(String studId) {
-		return this.studDao.createDelete(studId);
+		return this.studMapper.createDelete(studId);
 	}
 
 	//학생 목록
 	@Override
 	public List<StudVO> list(Map<String, Object> map) {
-		return this.studDao.list(map);
+		return this.studMapper.list(map);
 	}
 
 	//학생 등록(추가)
@@ -57,7 +58,7 @@ public class StudServiceImpl implements StudService {
 		//StudVO[studId=a005,studNm=개똥이,studPw=java, enabled=null
 		//	, studDet=상세정보, hobby=[sports,movie], hobbyVOList=null]
 		//1) STUD 테이블에 insert
-		int result = this.studDao.createRegister(studVO);
+		int result = this.studMapper.createRegister(studVO);
 		
 		//2) HOBBY 테이블에 insert
 		List<HobbyVO> hobbyVOList = new ArrayList<HobbyVO>();
@@ -67,7 +68,7 @@ public class StudServiceImpl implements StudService {
 			hobbyVO.setStudId(studVO.getStudId());//a005->a005
 			hobbyVO.setHobby(str);//sports->movie
 			
-			result += this.studDao.insertHobby(hobbyVO);
+			result += this.studMapper.insertHobby(hobbyVO);
 			
 			hobbyVOList.add(hobbyVO);
 		}
@@ -80,7 +81,7 @@ public class StudServiceImpl implements StudService {
 
 	@Override
 	public int updateAjax(StudVO studVO) {
-		return this.studDao.updateAjax(studVO);
+		return this.studMapper.updateAjax(studVO);
 	}
 
 }

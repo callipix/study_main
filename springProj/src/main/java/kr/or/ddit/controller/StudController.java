@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.ddit.service.StudService;
@@ -153,7 +155,7 @@ public class StudController {
 	}
 	/*
 	 요청URI : /stud/listAjax
-	 요청파라미터(json) : {"keyword":"신용"} 
+	 요청파라미터(json) : {"keyword":"신용" , "currentPage":3} 
 	 요청방식 : get
 	 
 	 골뱅이ResponseBody : object -> string 으로 변환하는 방식을 serialize
@@ -161,12 +163,15 @@ public class StudController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/listAjax",method=RequestMethod.POST)
-	public List<StudVO> listAjax(@RequestBody(required=false) Map<String,Object> map) {
+	public List<StudVO> listAjax(@RequestBody(required=false) Map<String,Object> map , @RequestParam(value = "currentPage" , required = false , defaultValue = "1") int currentPage) {
 		//map : null 또는 map : {"keyword":"신용"}
 		log.info("map : " + map);
+		map.put("currentPage" , currentPage);
 		
 		List<StudVO> studVOList = this.studService.list(map);
 		log.info("list->studVOList : " + studVOList);		
+		
+		int total = this.studService.list(map);
 		
 		return studVOList;
 	}

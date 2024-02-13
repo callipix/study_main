@@ -13,5 +13,8 @@ public interface FreeBoardMapper {
 	 * @param map 
 	 */
 	public List<FreeBoardVO> list(Map<String, Object> map);
+	
+	//전체 행의 수
+	public int getTotal();
 
 }

@@ -27,4 +27,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		return this.freeBoardMapper.list(map);
 	}
 
+	@Override
+	public int getTotal() {
+		return this.freeBoardMapper.getTotal();
+	}
+
 }

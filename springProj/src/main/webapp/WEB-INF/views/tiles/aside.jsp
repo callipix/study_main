@@ -79,15 +79,15 @@
 								<i class="far fa-circle nav-icon"></i>
 								<p>공지사항</p>
 						</a></li>
-						<li class="nav-item"><a href="./index3.html" class="nav-link">
+						<li class="nav-item"><a href="/lprod/list" class="nav-link">
 								<i class="far fa-circle nav-icon"></i>
-								<p>Dashboard v3</p>
+								<p>상품분류 목록</p>
 						</a></li>
 					</ul></li>
-				<li class="nav-item"><a href="pages/widgets.html"
+				<li class="nav-item"><a href="/stud/list"
 					class="nav-link"> <i class="nav-icon fas fa-th"></i>
 						<p>
-							Widgets <span class="right badge badge-danger">New</span>
+							학생목록 <span class="right badge badge-danger">New</span>
 						</p>
 				</a></li>
 				<li class="nav-item"><a href="#" class="nav-link"> <i

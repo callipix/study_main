@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.or.ddit.freeBoard.service.FreeBoardService;
 import kr.or.ddit.freeBoard.vo.FreeBoardVO;
+import kr.or.ddit.util.ArticlePage;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
@@ -33,15 +34,23 @@ public class FreeBoardController {
 	//required : 값이 없을 수도 있기때문에 false
 	public String list(Model model , @RequestParam(value="currentPage" , required=false , defaultValue = "1") int currentPage) {
 		
-		Map<String , Object> map = new HashMap<>();
-		map.put("currentPage" , currentPage);	// 페이지번호
-		
-		List<FreeBoardVO> freeBoardVOList = this.freeBoardService.list(map);
-		log.info("list -> freeBoardVOList : " + freeBoardVOList);
-		
-		model.addAttribute("freeBoardVOList" , freeBoardVOList);
-		// forwarding : jsp
-		return "freeBoard/list";
+		 Map<String,Object> map = new HashMap<String, Object>();
+	      map.put("currentPage",currentPage);//페이비번호
+	      
+	      
+	      //전체 행의 수 (total)
+	      int total = this.freeBoardService.getTotal();
+	      //한 화명에 보여지는 행의 수(기본10행)
+	      int size = 10;
+	      
+	      
+	      List<FreeBoardVO> freeBoardVOList =  this.freeBoardService.list(map);
+	      log.info("list->freeBoardVO:"+freeBoardVOList);
+	      
+	      model.addAttribute("data",new ArticlePage<FreeBoardVO>(total,
+	            currentPage, size, freeBoardVOList));
+	      
+	      //forwarding: jsp
+	      return "freeBoard/list";
+	   }
 	}
-
-}

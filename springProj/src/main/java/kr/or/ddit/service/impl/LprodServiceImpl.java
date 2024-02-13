@@ -1,6 +1,7 @@
 package kr.or.ddit.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class LprodServiceImpl implements LprodService {
 	LprodDao lprodDao;
 	
 	@Override
-	public List<LprodVO> list(String keyword) {
-		return this.lprodDao.list(keyword);
+	public List<LprodVO> list(Map<String , Object> map) {
+		return this.lprodDao.list(map);
 	}
 
 	//상품 분류 상세
@@ -42,6 +43,11 @@ public class LprodServiceImpl implements LprodService {
 	@Override
 	public int insertOne(LprodVO lprodVO) {
 		return this.lprodDao.insertOne(lprodVO);
+	}
+	// 전체 글 수
+	@Override
+	public int getTotal() {
+		return this.lprodDao.getTotal();
 	}
 	
 }
