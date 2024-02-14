@@ -33,6 +33,6 @@
 		<typeAlias type="kr.or.ddit.vo.Card2VO" alias="card2VO" />
 		<typeAlias type="kr.or.ddit.vo.Likes2VO" alias="likes2VO" />
 		<typeAlias type="kr.or.ddit.freeBoard.vo.FreeBoardVO" alias="freeBoardVO" />
-		<typeAlias type="kr.or.ddit.shop.vo.ProductVO" alias="productVO" />
+		<typeAlias type="kr.or.ddit.shop.vo.EcommerceVO" alias="ecommerceVO" />
 	</typeAliases>
 </configuration>

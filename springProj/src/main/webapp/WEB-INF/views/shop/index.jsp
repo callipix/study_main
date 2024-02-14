@@ -2,17 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
 <script type="text/javascript">
-$(function () {
-	$(".product-image-thumb").on("click" , function () {
-		
-//		let pictureUrl = $(this).data("pictureUrl");
-		let pictureUrl = $(this).val(".product-image-thumb");
-		console.log("클릭")
-		console.log(pictureUrl);
-		$("product-image-thumb").html("<img src='/resources/upload"+pictureUrl +"' style='width:100%' />");
-	})
-})
+
 </script>
+<div>
+<div class="col-12 justify-content-right">
+	<a href="/shop/create" class="btn btn-primary" style="float:right;">상품등록</a>
+</div>
 <section class="content">
 <div class="card card-solid">
 <div class="card-body">
@@ -148,3 +143,4 @@ Add to Wishlist
 </div>
 
 </section>
+</div>

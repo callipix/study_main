@@ -1,9 +1,11 @@
 package kr.or.ddit.shop.mapper;
 
-import kr.or.ddit.shop.vo.ProductVO;
+import kr.or.ddit.shop.vo.EcommerceVO;
 
 public interface ShopMapper {
 
-	public ProductVO detail(String pdtId);	
+	public EcommerceVO detail(String pdtId);
+	
+	public int createProduct(EcommerceVO ecommerceVO);
 
 }
