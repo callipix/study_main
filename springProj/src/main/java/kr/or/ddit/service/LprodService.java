@@ -21,6 +21,6 @@ public interface LprodService {
 	//상품 분류 추가
 	public int insertOne(LprodVO lprodVO);
 	// 전체 글 수
-	public int getTotal();
+	public int getTotal(Map<String,Object> map);
 	
 }

@@ -258,10 +258,11 @@ $(function(){
 	$("#btnSearch").on("click",function(){
 		let keyword = $("#keyword").val();
 		console.log("keyword : " + keyword);
-		
+	
 		//json오브젝트
 		let data = {
-			"keyword":keyword	
+			"keyword":keyword,
+			"currentPage":1
 		};
 		console.log("data : ", data);
 		console.log("data : " + JSON.stringify(data));
@@ -270,6 +271,7 @@ $(function(){
 			url:"/lprod/listAjax",
 			contentType:"application/json;charset=utf-8",
 			data:JSON.stringify(data),
+// contentType:"application/json;charset=utf-8", data:JSON.stringify(data)를 작성하면 controller에서 responseBody 사용가능
 			type:"post",
 			dataType:"json",
 			beforeSend:function(xhr){
@@ -283,7 +285,7 @@ $(function(){
 				$("#lprodTbody").html("");
 				
 				//result : List<LprodVO>
-				$.each(result,function(idx, lprodVO){
+				$.each(result.content,function(idx, lprodVO){
 					str += "<tr>";
 					str += "<td>"+lprodVO.lprodId+"</td>";
 					str += "<td><a data-lprod-id='"+lprodVO.lprodId+"' class='aModal' data-toggle='modal' href='#modal-sm'>"+lprodVO.lprodGu+"</a></td>";
@@ -292,7 +294,7 @@ $(function(){
 				});
 				
 				$("#lprodTbody").append(str);
-				
+				$("#divPagingArea").html(result.pagingArea)
 //	 			result.forEach(function(lprodVO){
 //	 			});
 			}
@@ -300,12 +302,24 @@ $(function(){
 	});
 	
 	let currentPage ="${param.currentPage}";
+	
+	if(currentPage==""){
+		currentPage = "1";
+	}
+	let data = {
+			"keyword":"${param.keyword}",
+			"currentPage":currentPage
+	}
 	console.log(currentPage)
-	//아작나써유..(피)씨다타써. HTML(HyperText Markup Language)
+	console.log(keyword);
+	console.log("data : " + JSON.stringify(data))
+;	//아작나써유..(피)씨다타써. HTML(HyperText Markup Language)
 	//ajax : Asynchronous JavaScript And XML(eXtensible Markup Language)
 	$.ajax({
-		url:"/lprod/listAjax?currentPage="+currentPage,
+		url:"/lprod/listAjax",
 		type:"post",
+		contentType:"application/json;charset=utf-8",
+		data:JSON.stringify(data),
 		dataType:"json",
 		beforeSend:function(xhr){
             xhr.setRequestHeader("${_csrf.headerName}","${_csrf.token}");
@@ -335,6 +349,8 @@ $(function(){
 			$("#divPagingArea").html(result.pagingArea)
 // 			result.forEach(function(lprodVO){
 // 			});
+			
+			console.log("result : ",result);
 		}
 	});
 });

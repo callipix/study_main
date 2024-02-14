@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.or.ddit.service.LprodService;
 import kr.or.ddit.util.ArticlePage;
 import kr.or.ddit.vo.LprodVO;
+import kr.or.ddit.vo.StudVO;
 import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("/lprod")
@@ -37,22 +38,28 @@ public class LprodController {
 	 return "lprod/list";
 	 */
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public String list(Model model, 
+	public String list(Model model, Map<String,Object>map ,
 			@RequestParam(value="currentPage",required = false , defaultValue = "1") int currentPage ,
-			@RequestBody(required=false) Map<String,Object> map) {
-		String keyword = "";
+			@RequestParam(value="keyword" , required = false , defaultValue = "") String keyword ) {
+		
+		// map = null
+		// map {"keyword":"" , "currentPage":""}
+		
 		if(map!=null) {
 			keyword = (String)map.get("keyword");
+			
+			if(map.get("currentPage")==null) {				
+				map.put("currentPage", currentPage);
+			}
 		} else {	//map에 keyword가 없을때(null)
 			map = new HashMap<String , Object>();
 			map.put("keyword" , "");
+			map.put("currentPage" , 1);				
 		}
-				
-		map.put("currentPage" , currentPage);
 		
 //		map{"keyword":"" , "currentPage":1};
 		// 전체 글 수
-		int total = this.lprodService.getTotal();
+		int total = this.lprodService.getTotal(map);
 		log.info("list->total : " + total);
 		// 한 화면에 보여지는 행의 수
 		int size = 10;
@@ -63,7 +70,7 @@ public class LprodController {
 		List<LprodVO> lprodVOList = this.lprodService.list(map);
 		log.info("list->lprodVOList : " + lprodVOList);
 		
-		model.addAttribute("data", new ArticlePage<LprodVO>(total, currentPage, size , lprodVOList));
+		model.addAttribute("data", new ArticlePage<LprodVO>(total, currentPage, size , lprodVOList , keyword));
 		
 		//forwarding : jsp
 		return "lprod/list";
@@ -79,38 +86,38 @@ public class LprodController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/listAjax",method=RequestMethod.POST)
-	public ArticlePage<LprodVO> listAjax(
-			@RequestParam(value="currentPage",required=false,defaultValue="1") int currentPage,
-			@RequestBody(required=false) Map<String,Object> map
+	public ArticlePage<LprodVO> listAjax(@RequestBody(required=false) Map<String,Object> map
 			) throws ParseException {
 		log.info("map : " + map);
-		
-		String keyword = "";
-		
-		if(map!=null) {
-			keyword = (String)map.get("keyword");			
-		} else {
-			map = new HashMap<String, Object>();
-			map.put("keyword", "");
-		}
-		
-		map.put("currentPage", currentPage);
-		
+			
 		//map{"keyword":"","currentPage":1}
-		
-		int total = this.lprodService.getTotal();
+		/*
+		String keyword = "";
+		if(map!=null) {
+			keyword = (String)map.get("keyword");
+		} else {	//map에 keyword가 없을때(null)
+			map = new HashMap<String , Object>();
+			map.put("keyword" , "");
+		}
+		이부분은 자바스크립트에서 처리가 되어있기 때문에 필요없다
+		 */
+		int total = this.lprodService.getTotal(map);
 		log.info("listAjax->total : " + total);
 		
 		int size = 10;
 		
 		//Map<String,Object> map
+		int currentPage = Integer.parseInt(map.get("currentPage").toString());
+		
+		String keyword = map.get("keyword").toString();
+		log.info("listAjax->keyword : " + keyword);
 		List<LprodVO> lprodVOList = this.lprodService.list(map);
-		log.info("list->lprodVOList : " + lprodVOList);
 		
-		ArticlePage<LprodVO> data = new ArticlePage<LprodVO>(total
-				, currentPage, size, lprodVOList);
+		ArticlePage<LprodVO> data = new ArticlePage<LprodVO>(total,currentPage, size, lprodVOList, keyword);
 		
-		data.setUrl("/lprod/list");
+		String url = "/lprod/list";
+		data.setUrl(url);
+		
 		return data;
 	}
 	//LPROD 테이블에서 1행 검색

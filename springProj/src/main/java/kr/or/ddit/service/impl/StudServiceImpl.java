@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.or.ddit.dao.StudDao;
 import kr.or.ddit.mapper.StudMapper;
 import kr.or.ddit.service.StudService;
 import kr.or.ddit.vo.HobbyVO;
@@ -82,6 +81,11 @@ public class StudServiceImpl implements StudService {
 	@Override
 	public int updateAjax(StudVO studVO) {
 		return this.studMapper.updateAjax(studVO);
+	}
+
+	@Override
+	public int getTotal(Map<String, Object> map) {
+		return this.studMapper.getTotal(map);
 	}
 
 }

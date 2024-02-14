@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.ddit.service.StudService;
+import kr.or.ddit.util.ArticlePage;
 import kr.or.ddit.vo.StudVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -143,7 +143,10 @@ public class StudController {
 	 요청방식 : get
 	 */
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public String list(Model model, Map<String,Object> map) {
+	public String list(Model model, Map<String,Object> map,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") int currentPage) {
+		
+		map.put("currentPage", currentPage);
 		
 		List<StudVO> studVOList = this.studService.list(map);
 		log.info("list->studVOList : " + studVOList);
@@ -163,28 +166,30 @@ public class StudController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/listAjax",method=RequestMethod.POST)
-	public List<StudVO> listAjax(@RequestBody(required=false) Map<String,Object> map , @RequestParam(value = "currentPage" , required = false , defaultValue = "1") int currentPage) {
-		//map : null 또는 map : {"keyword":"신용"}
-		log.info("map : " + map);
-		map.put("currentPage" , currentPage);
+	public ArticlePage<StudVO> listAjax(@RequestBody(required=false) Map<String,Object> map) {
+		//map : null 또는 map : {"keyword":"알탄","currentPage":1}
+		log.info("listAjax->map : " + map);
+		
+		//map : {"keyword":"","currentPage":1}
 		
 		List<StudVO> studVOList = this.studService.list(map);
 		log.info("list->studVOList : " + studVOList);		
 		
-		int total = this.studService.list(map);
+		int total = this.studService.getTotal(map);
+		log.info("list->total : " + total);
+		int size = 10;
 		
-		return studVOList;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value="/updateAjax",method=RequestMethod.POST)
-	public int updateAjax(@RequestBody StudVO studVO) {
-		log.info("updateAjax->studVO : " + studVO);
+		String currentPage = map.get("currentPage").toString();
 		
-		int result = this.studService.createModify(studVO);
-		log.info("updateAjax->result : " + result);		
+		String keyword = map.get("keyword").toString();
+		log.info("listAjax->keyword : " + keyword);
 		
-		return result;
+		ArticlePage<StudVO> data = new ArticlePage<StudVO>(total,Integer.parseInt(currentPage), size, studVOList, keyword);
+		
+		String url = "/stud/list";
+		data.setUrl(url);
+		
+		return data;
 	}
 	
 	@ResponseBody
@@ -200,7 +205,3 @@ public class StudController {
 		return result;
 	}
 }
-
-
-
-

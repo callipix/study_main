@@ -27,5 +27,7 @@ public interface StudService {
 	
 	
 	public int updateAjax(StudVO studVO);
+
+	public int getTotal(Map<String, Object> map);
 	
 }

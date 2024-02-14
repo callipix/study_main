@@ -39,8 +39,8 @@ public class LprodDao {
 		return this.sqlSessionTemplate.delete("lprod.insertOne", lprodVO);
 	}
 	// 전체 글 수
-	public int getTotal() {
-		return this.sqlSessionTemplate.selectOne("lprod.getTotal");
+	public int getTotal(Map<String, Object> map) {
+		return this.sqlSessionTemplate.selectOne("lprod.getTotal" , map);
 	}
 	
 }

@@ -13,7 +13,7 @@ public class ArticlePage<T> {
 	private int totalPages;
 	// 블록의 시작 페이지 번호
 	private int startPage;
-	//블록의 종료 페이지 번호
+	// 블록의 종료 페이지 번호
 	private int endPage;
 	//검색어
 	private String keyword = "";
@@ -26,11 +26,12 @@ public class ArticlePage<T> {
 	
 	// 생성자(Constructor) : 페이징 정보를 생성
 	// 753 1 10	select 결과 => 10행
-	public ArticlePage(int total, int currentPage, int size, List<T> content) {
+	public ArticlePage(int total, int currentPage, int size, List<T> content, String keyword) {
 		//size : 한 화면에 보여질 목록의 행 수
 		this.total = total;//753
 		this.currentPage = currentPage;//1
 		this.content = content;
+		this.keyword = keyword;
 		
 		//전체글 수가 0이면?
 		if(total == 0) {
@@ -64,16 +65,17 @@ public class ArticlePage<T> {
 			if(endPage > totalPages) {
 				endPage = totalPages;
 			}
+		}
 			pagingArea += "<div class='col-sm-12 col-md-7'>";
 			pagingArea += "<div class='dataTables_paginate paging_simple_numbers' id='example2_paginate'>";
 			pagingArea += "<ul class='pagination'>";
-			pagingArea += "<li class='paginate_button page-item previous"; 
-			if(this.startPage<6) {
+			pagingArea += "<li class='paginate_button page-item previous "; 
+			if(this.startPage < 6) {
 				pagingArea += "disabled";
 			}
 			pagingArea += "'";
-			pagingArea += "id='example2_previous'>";
-			pagingArea += "<a href='"+this.url+"?currentPage="+(this.startPage-5)+"' aria-controls='example2' data-dt-idx='0' tabindex='0'";
+			pagingArea += " id='example2_previous'>";
+			pagingArea += "<a href='"+this.url+"?currentPage="+(this.startPage-5)+"&keyword="+this.keyword+"' aria-controls='example2' data-dt-idx='0' tabindex='0'";
 			pagingArea += "class='page-link'>Previous</a></li>";
 			
 			for(int pNo=this.startPage;pNo<=this.endPage;pNo++) {		
@@ -82,22 +84,21 @@ public class ArticlePage<T> {
 					pagingArea += "active";
 				}
 				pagingArea += "'>";
-				pagingArea += "<a href='"+this.url+"?currentPage="+pNo+"' aria-controls='example2' data-dt-idx='1' tabindex='0'";
+				pagingArea += "<a href='"+this.url+"?currentPage="+pNo+"&keyword="+this.keyword+"' aria-controls='example2' data-dt-idx='1' tabindex='0'";
 				pagingArea += "class='page-link'>"+pNo+"</a>";
 				pagingArea += "</li>";
 			}
-			pagingArea += "<li class='paginate_button page-item next"; 
+			pagingArea += "<li class='paginate_button page-item next "; 
 			if(this.endPage>=this.totalPages) {
 				pagingArea += "disabled";
 			}
 			pagingArea += "' id='example2_next'><a ";
-			pagingArea += "href='"+this.url+"?currentPage="+(this.startPage+5)+"' aria-controls='example2' data-dt-idx='7' ";
+			pagingArea += "href='"+this.url+"?currentPage="+(this.startPage+5)+"&keyword="+this.keyword+"' aria-controls='example2' data-dt-idx='7' ";
 			pagingArea += "tabindex='0' class='page-link'>Next</a></li>";
 			pagingArea += "</ul>";
 			pagingArea += "</div>";
 			pagingArea += "</div>";
-		}
-	}//end 생성자
+		}//end 생성자
 
 	public int getTotal() {
 		return total;
@@ -180,5 +181,4 @@ public class ArticlePage<T> {
 	public void setPagingArea(String pagingArea) {
 		this.pagingArea = pagingArea;
 	}
-	
 }

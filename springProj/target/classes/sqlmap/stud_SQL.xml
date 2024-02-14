@@ -2,19 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.StudMapper">
 	<sql id="where">
-	<if test="keyword!=null and keyword!=''">
+		<if test="keyword!=null and keyword!=''">
 			AND (
 					STUD_ID LIKE '%' || #{keyword} || '%'
 				OR	STUD_NM LIKE '%' || #{keyword} || '%'
 			)
 		</if>
-	
 	</sql>
-
 	<!-- StudVO[studId=a005,studNm=개똥이,studPw=java, enabled=null
 		, studDet=상세정보, hobby=[sports,movie], hobbyVOList=null
 		, gender=female] -->
-		<insert id="createRegister" parameterType="studVO">
+	<insert id="createRegister" parameterType="studVO">
 		INSERT INTO STUD(STUD_ID, STUD_NM, STUD_PW
 		<if test="studDet!=null and studDet!=''">
 		, STUD_DET
@@ -79,22 +77,21 @@
 	</delete>
 	
 	<!-- 학생 목록 
-	map : null 또는 map : {"keyword":"" , "currentPage" : 1}
-			       또는 map : {"keyword":"신용" , "currentPage" : 3}
+	map : null 또는 map : {"keyword":"","currentPage":1} 
+			      또는 map : {"keyword":"신용","currentPage":3}
 	
 	휴..낮엔더워 => () > NOT > AND > OR
 	-->
 	<select id="list" parameterType="hashMap" resultType="studVO">
-		with t as(
-			select row_number() over(order by stud_id asc) rnum
-			, stud_id , stud_nm , stud_pw , enabled
-			from stud
-			where 1= 1
-			<include refid="where"></include>
-			)
-			select t.* from t
-			where t.rnum between (#{currentPage}*10) - (10 -1) and (#{currentPage} * 10)
-		
+		WITH T AS(
+		    SELECT ROW_NUMBER() OVER(ORDER BY STUD_ID ASC) RNUM
+		          , STUD_ID, STUD_NM, STUD_PW, ENABLED 
+		    FROM   STUD
+		    WHERE  1 = 1
+		    <include refid="where"></include>
+		)
+		SELECT T.* FROM T
+		WHERE  T.RNUM BETWEEN (#{currentPage}*10) - (10 - 1) AND (#{currentPage}*10)
 	</select>
 	
 	<!-- HOBBY 테이블에 insert 
@@ -104,6 +101,11 @@
 		INSERT INTO HOBBY(STUD_ID, HOBBY)
 		VALUES(#{studId},#{hobby})
 	</insert>
+	
+	<!-- map : {"keyword":"신용","currentPage":3} -->
+	<select id="getTotal" parameterType="hashMap" resultType="int">
+		SELECT COUNT(*) FROM STUD
+		WHERE  1 = 1
+		<include refid="where"></include>
+	</select>
 </mapper>
-
-

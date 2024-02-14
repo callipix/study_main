@@ -1,35 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lprod">
-	
-	<!-- map{"keyword":"" , "currentPage":1} -->
+	<!-- map{"keyword":"","currentPage":1} -->
 	<sql id="where">
 		<if test="keyword!=null and keyword!=''">
-			AND    (
-					LPROD_GU LIKE '%' || #{keyword} || '%'
-				OR  LPROD_NM LIKE '%' || #{keyword} || '%'
-			)
+		AND    (
+				LPROD_GU LIKE '%' || #{keyword} || '%'
+			OR  LPROD_NM LIKE '%' || #{keyword} || '%'
+		)
 		</if>
 	</sql>
 	
-	<!-- map{"keyword":"" , "currentPage":1} -->
-<!-- 	<select id="list" parameterType="hashMap" resultType="lprodVO"> -->
-<!-- 		with T as( -->
-<!-- 			select ROW_NUMBER() OVER (ORDER BY F.LPROD_ID DESC) RNUM , F.* -->
-<!-- 			from ( -->
-<!-- 			SELECT LPROD_ID, LPROD_GU, LPROD_NM -->
-<!--       			FROM   LPROD -->
-<!--       			WHERE  1 = 1 -->
-<!-- 		<include refid="where"></include>		 -->
-<!--       			) F -->
-<!-- 			) -->
-<!-- 			select T.* -->
-<!-- 			from T -->
-<!-- 			where T.RNUM between (#{currentPage} * 10) - ( 10 - 1 ) and (#{currentPage} * 10) -->
-<!-- 	</select> -->
+	<!-- map{"keyword":"","currentPage":1} -->
 	<select id="list" parameterType="hashMap" resultType="lprodVO">
 		WITH T AS(
-		    SELECT ROW_NUMBER() OVER (ORDER BY F.LPROD_ID DESC) RNUM , F.*
+		    SELECT ROW_NUMBER() OVER (ORDER BY F.LPROD_ID DESC) RNUM
+		          , F.*
 		    FROM (
 		        SELECT LPROD_ID, LPROD_GU, LPROD_NM
 		        FROM   LPROD
@@ -39,7 +25,7 @@
 		)
 		SELECT T.*
 		FROM   T
-		WHERE  T.RNUM BETWEEN (#{currentPage} * 10) - (10 - 1) AND (#{currentPage} * 10)
+		WHERE  T.RNUM BETWEEN (#{currentPage}*10) - (10-1) AND (#{currentPage}*10)
 	</select>
 	
 	<!-- LprodVO[lprodId=2,lprodGu=null,lprodNm=null] -->
@@ -66,12 +52,11 @@
 		INSERT INTO LPROD(LPROD_ID,LPROD_GU,LPROD_NM)
 		VALUES(#{lprodId}, #{lprodGu}, #{lprodNm}) 
 	</insert>
+	
 	<!-- 전체 글 수 -->
-	<select id="getTotal" resultType="int">
-		select count(*) from LPROD
-		where 1 = 1
+	<select id="getTotal" parameterType="hashMap" resultType="int">
+		SELECT COUNT(*) FROM LPROD
+		WHERE  1 = 1
+		<include refid="where"></include>
 	</select>
 </mapper>
-
-
-

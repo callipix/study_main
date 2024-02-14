@@ -46,8 +46,8 @@ public class LprodServiceImpl implements LprodService {
 	}
 	// 전체 글 수
 	@Override
-	public int getTotal() {
-		return this.lprodDao.getTotal();
+	public int getTotal(Map<String , Object> map) {
+		return this.lprodDao.getTotal(map);
 	}
 	
 }

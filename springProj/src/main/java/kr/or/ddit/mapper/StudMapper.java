@@ -23,4 +23,6 @@ public interface StudMapper {
 
 	public int updateAjax(StudVO studVO);
 
+	public int getTotal(Map<String, Object> map);
+
 }

@@ -32,7 +32,8 @@ public class FreeBoardController {
 	*/
 	@GetMapping("/list")
 	//required : 값이 없을 수도 있기때문에 false
-	public String list(Model model , @RequestParam(value="currentPage" , required=false , defaultValue = "1") int currentPage) {
+	public String list(Model model , @RequestParam(value="currentPage" , required=false , defaultValue = "1") int currentPage,
+			@RequestParam(value="keyword",required=false) String keyword) {
 		
 		 Map<String,Object> map = new HashMap<String, Object>();
 	      map.put("currentPage",currentPage);//페이비번호
@@ -48,7 +49,7 @@ public class FreeBoardController {
 	      log.info("list->freeBoardVO:"+freeBoardVOList);
 	      
 	      model.addAttribute("data",new ArticlePage<FreeBoardVO>(total,
-	            currentPage, size, freeBoardVOList));
+	            currentPage, size, freeBoardVOList,keyword));
 	      
 	      //forwarding: jsp
 	      return "freeBoard/list";

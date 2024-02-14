@@ -143,13 +143,14 @@ $(function(){
 	
 	//검색
 	$("#btnSearch").on("click",function(){
-		let keyword = $("input[name='keyword']").val();
+		let keyword = $.trim(("input[name='keyword']").val());
 		
 		console.log("keyword : " + keyword);
 		
 		//json 오브젝트
 		let data = {
-			"keyword":keyword	
+			"keyword":keyword,
+			"currentPage":currentPage
 		};
 		
 		console.log("data : ", data);
@@ -178,7 +179,7 @@ $(function(){
 				//목록을 초기화
 				$("#studBody").html("");
 				
-				$.each(result,function(idx,studVO){
+				$.each(result.content,function(idx,studVO){
 					console.log("studVO["+idx+"] : ", studVO);
 					//{rnum: 1, studId: 'a001', studNm: '김은대', studPw: 'asdfasdf', enabled: '1'}
 					str += "<tr>";
@@ -196,6 +197,8 @@ $(function(){
 				});
 				//요소.append : 누적, 요소.html : 새로고침, 요소.innerHTML : JavaScript에서 새로고침
 				$("#studBody").append(str);
+				//페이징 처리
+				$("#divPaging").html(result.pagingArea);
 			}
 		});
 	});
@@ -213,31 +216,37 @@ $(function(){
 	
 	// currentPage=3;
 	let currentPage = "${param.currentPage}";
-	if(currentPage ==""){
+	
+	if(currentPage==""){
 		currentPage = "1";
 	}
-	let data ={
-			"keyword":"",
-			"currentPage":currentPage
+	
+	//json 오브젝트
+	let data = {
+		"keyword":"${param.keyword}",
+		"currentPage":currentPage
 	};
-	console.log("data : " + data)
+	
+	console.log("data : ", data);
 	$.ajax({
 		url:"/stud/listAjax",
 		type:"post",
+		data:JSON.stringify(data),
+		contentType:"application/json;charset=utf-8",
 		dataType:"json",
 		beforeSend:function(xhr){
 			xhr.setRequestHeader("${_csrf.headerName}","${_csrf.token}");
 		},
 		success:function(result){
-			//result : List<StudVO>
+			//result : ArticlePage
 // 			console.log("result",result);
 			//console.log("result : " + JSON.stringify(result));
-			//result : List<StudVO>
+			//result.content : List<StudVO>
 			
 			let str = "";
 			let studPwStr = "";
 			
-			$.each(result,function(idx,studVO){
+			$.each(result.content,function(idx,studVO){
 				console.log("studVO["+idx+"] : ", studVO);
 				//{rnum: 1, studId: 'a001', studNm: '김은대', studPw: 'asdfasdf', enabled: '1'}
 				str += "<tr>";
@@ -255,6 +264,8 @@ $(function(){
 			});
 			//요소.append : 누적, 요소.html : 새로고침, 요소.innerHTML : JavaScript에서 새로고침
 			$("#studBody").append(str);
+			//페이징 처리
+			$("#divPaging").html(result.pagingArea);
 		}
 	});
 });
@@ -294,10 +305,9 @@ $(function(){
 					</tbody>
 				</table>
 			</div>
-
 		</div>
-
 	</div>
+	<div class="row justify-content-center" id="divPaging"></div>
 </div>
 <!-- 학생상세 모달 -->
 <div class="modal fade" id="modal-detail">
