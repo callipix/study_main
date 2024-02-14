@@ -49,5 +49,10 @@ public class LprodServiceImpl implements LprodService {
 	public int getTotal(Map<String , Object> map) {
 		return this.lprodDao.getTotal(map);
 	}
+
+	@Override
+	public int getMaxLprodId() {
+		return this.lprodDao.getMaxLprodId();
+	}
 	
 }

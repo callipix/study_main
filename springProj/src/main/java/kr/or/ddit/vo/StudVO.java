@@ -50,6 +50,9 @@ public class StudVO {
 	private String[] hobby;//학생 취미들
 	private String gender;//성별
 	private String nationality;//국적
+	private String postNum;//우편번호
+	private String studAddress;//주소
+	private String studAddress2;//상세주소
 	
 	//StudVO : StudAuthVO = 1 : N
 	private List<StudAuthVO> studAuthVOList;

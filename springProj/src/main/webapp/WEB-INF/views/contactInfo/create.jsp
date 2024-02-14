@@ -49,7 +49,6 @@ $(function(){
 		
 	});
 	
-	
 	$(".ck-blurred").keyup(function () {	
 		console.log("str : " + window.editor.getData());
 		$("#ciMesg").val(window.editor.getData());

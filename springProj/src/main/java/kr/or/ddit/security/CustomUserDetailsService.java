@@ -19,7 +19,7 @@ UserDetailsService : 스프링 시큐리티에서 제공해주고 있는
 public class CustomUserDetailsService implements UserDetailsService {
 	
 	//DI(Dependency Injection) : 의존성 주입
-	//IoC(Inversion of Control) : 제어의 역전
+	//IoC(Inversion of Control) : 제어 역전
 	@Autowired
 	private StudMapper studMapper;
 	

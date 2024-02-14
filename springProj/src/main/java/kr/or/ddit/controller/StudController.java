@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,9 @@ public class StudController {
 	//IoC(제어의 역전)
 	@Autowired
 	StudService studService;
+	//security-context.xml을 참고
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 	
 	/*
 	요청URI : /stud/create?register
@@ -43,26 +47,28 @@ public class StudController {
 	}
 	
 	/*
-	요청URI : /stud/create?register
-	요청파라미터 : {studId=a001,studNm=개똥이,studPw=java}
-	파람즈 : register
-	요청방식 : post(HTTP method)
+		요청URI : /stud/create?register
+		요청파라미터 : {studId=a001,studNm=개똥이,studPw=java,studDet=학생상세내용
+		            ,gender=여성,nationality=korea,postNum=12345,studAddress=대전 중구
+		            ,studAddress2=123-33}
+		파람즈 : register
+		요청방식 : post
 	*/
 	@RequestMapping(value="/create",method=RequestMethod.POST,params="register")
-	public String createRegister(String studId, String studNm, String studPw) {
-		StudVO studVO = new StudVO();
-		studVO.setStudId(studId);
-		studVO.setStudNm(studNm);
-		studVO.setStudPw(studPw);
+	public String createRegister(StudVO studVO) {
+		
 		//StudVO{studId=a001,studNm=개똥이,studPw=java,enabled=null}
 		log.info("studVO : " + studVO);
 		
+		String studPw = passwordEncoder.encode(studVO.getStudPw());
+		log.info("createRegister -> studPw : " + studPw);
+		studVO.setStudPw(studPw);
 		//학생 등록
 		int result = this.studService.createRegister(studVO);
 		log.info("createRegister->result : " + result);
 		
 		//redirect : URL재요청
-		return "redirect:/stud/detail?studId="+studId;
+		return "redirect:/stud/detail?studId="+studVO.getStudId();
 	}
 	
 	/*
@@ -180,8 +186,8 @@ public class StudController {
 		int size = 10;
 		
 		String currentPage = map.get("currentPage").toString();
-		
 		String keyword = map.get("keyword").toString();
+		
 		log.info("listAjax->keyword : " + keyword);
 		
 		ArticlePage<StudVO> data = new ArticlePage<StudVO>(total,Integer.parseInt(currentPage), size, studVOList, keyword);

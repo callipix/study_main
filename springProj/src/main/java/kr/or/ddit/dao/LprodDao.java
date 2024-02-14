@@ -15,6 +15,7 @@ public class LprodDao {
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
 
+	//map{"keyword":"","currentPage":1}
 	public List<LprodVO> list(Map<String, Object> map) {
 		return this.sqlSessionTemplate.selectList("lprod.list", map);
 	}
@@ -36,11 +37,17 @@ public class LprodDao {
 
 	//상품 분류 추가
 	public int insertOne(LprodVO lprodVO) {
-		return this.sqlSessionTemplate.delete("lprod.insertOne", lprodVO);
+		return this.sqlSessionTemplate.update("lprod.insertOne", lprodVO);
 	}
-	// 전체 글 수
+
+	//전체 글 수
 	public int getTotal(Map<String, Object> map) {
-		return this.sqlSessionTemplate.selectOne("lprod.getTotal" , map);
+		return this.sqlSessionTemplate.selectOne("lprod.getTotal", map);
+	}
+
+	//마지막 아이디 값 가져오기
+	public int getMaxLprodId() {
+		return this.sqlSessionTemplate.selectOne("lprod.getMaxLprodId");
 	}
 	
 }

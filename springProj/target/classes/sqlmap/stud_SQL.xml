@@ -23,6 +23,15 @@
 		<if test="nationality!=null and nationality!=''">
 		, NATIONALITY
 		</if>
+		<if test="postNum!=null and postNum!=''">
+		, POST_NUM
+		</if>
+		<if test="studAddress!=null and studAddress!=''">
+		, STUD_ADDRESS
+		</if>
+		<if test="studAddress2!=null and studAddress2!=''">
+		, STUD_ADDRESS2
+		</if>
 		)
 		VALUES(#{studId},#{studNm},#{studPw}
 		<if test="studDet!=null and studDet!=''">
@@ -34,6 +43,15 @@
 		<if test="nationality!=null and nationality!=''">
 		,#{nationality}
 		</if>
+		<if test="postNum!=null and postNum!=''">
+		,#{postNum}
+		</if>
+		<if test="studAddress!=null and studAddress!=''">
+		,#{studAddress}
+		</if>
+		<if test="studAddress2!=null and studAddress2!=''">
+		,#{studAddress2}
+		</if>
 		)
 	</insert>
 
@@ -41,7 +59,13 @@
 		<result property="studId"  column="STUD_ID" />  
 		<result property="studNm"  column="STUD_NM" />  
 		<result property="studPw"  column="STUD_PW" />  
-		<result property="enabled" column="ENABLED" />  
+		<result property="enabled" column="ENABLED" /> 
+		<result property="studDet" column="STUD_DET" jdbcType="CLOB" javaType="java.lang.String" />
+		<result property="gender" column="GENDER" />
+		<result property="nationality" column="NATIONALITY" />
+		<result property="postNum" column="POST_NUM" />
+		<result property="studAddress" column="STUD_ADDRESS" />
+		<result property="studAddress2" column="STUD_ADDRESS2" />
 		<collection property="studAuthVOList" resultMap="studAuthMap"></collection>
 	</resultMap>
 	
@@ -52,8 +76,9 @@
 
 	<!-- 학생 상세 -->
 	<select id="detail" parameterType="String" resultMap="studMap">
-		SELECT A.STUD_ID, A.STUD_NM, A.STUD_PW, A.ENABLED
-		      , B.AUTH
+		SELECT A.STUD_ID, A.STUD_NM, A.STUD_PW, A.ENABLED, A.STUD_DET, A.GENDER, A.NATIONALITY
+						, A.POST_NUM, A.STUD_ADDRESS, A.STUD_ADDRESS2
+						, B.AUTH
 		FROM   STUD A, STUD_AUTH B
 		WHERE  A.STUD_ID = B.STUD_ID
 		AND    A.ENABLED = '1'

@@ -6,6 +6,12 @@
 $(function(){
 	console.log("개똥이");
 	
+	// 회원 등록
+	$("btnCreate").on("click" , function () {
+	console.log("개똥이");
+		location.href ="/stud/create";
+	});
+	
 	$(".edit").css("display","none");
 	
 	//수정/일반 모드 토글
@@ -61,7 +67,6 @@ $(function(){
 						$(this).children("td").eq(4).html($("#studPw").val());
 					}
 				});
-				
 				$("#cancel").click();
 			}
 		});
@@ -169,7 +174,7 @@ $(function(){
 			},
 			success:function(result){
 				//result : List<StudVO>
-//	 			console.log("result",result);
+				//console.log("result",result);
 				//console.log("result : " + JSON.stringify(result));
 				//result : List<StudVO>
 				
@@ -238,10 +243,10 @@ $(function(){
 			xhr.setRequestHeader("${_csrf.headerName}","${_csrf.token}");
 		},
 		success:function(result){
-			//result : ArticlePage
-// 			console.log("result",result);
-			//console.log("result : " + JSON.stringify(result));
-			//result.content : List<StudVO>
+			// result : ArticlePage
+			// console.log("result",result);
+			// console.log("result : " + JSON.stringify(result));
+			// result.content : List<StudVO>
 			
 			let str = "";
 			let studPwStr = "";
@@ -306,8 +311,15 @@ $(function(){
 				</table>
 			</div>
 		</div>
+		<div class="row justify-content-center" id="divPaging">
+	</div>	
 	</div>
-	<div class="row justify-content-center" id="divPaging"></div>
+		
+
+	<div class="col-12 justify-content-right">
+<!-- 		<button type="button" id="btnCreate" class="btn btn-primary" style="float:right;">회원등록</button> -->
+	<a href="/stud/create?register" class="btn btn-primary" style="float:right;">회원등록</a>
+	</div>
 </div>
 <!-- 학생상세 모달 -->
 <div class="modal fade" id="modal-detail">

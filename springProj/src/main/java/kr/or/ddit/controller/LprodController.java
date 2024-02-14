@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.or.ddit.service.LprodService;
 import kr.or.ddit.util.ArticlePage;
 import kr.or.ddit.vo.LprodVO;
-import kr.or.ddit.vo.StudVO;
 import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("/lprod")
@@ -143,7 +142,7 @@ public class LprodController {
 	
 	/*
 	요청URI : /lprod/updateOne
-	요청파라미터(json) : {"lprodId":"36","lprodGu":"TT092","lprodNm":"트리거 테스트 2"}
+	요청파라미터(json) : {"lprodId":"802","lprodGu":"T802","lprodNm":"상품분류명T802"}
 	요청방식(비동기) : post
 	
 	리턴타입이 int, String일 경우 dataType:"text",
@@ -153,7 +152,8 @@ public class LprodController {
 	public int updateOne(@RequestBody LprodVO lprodVO) {
 		log.info("updateOne : " + lprodVO);
 		
-		int result = this.lprodService.updateOne(lprodVO);
+		int result = this.lprodService.insertOne(lprodVO);
+//		int result = this.lprodService.updateOne(lprodVO);
 		log.info("updateOne : " + result);
 		
 		return result;
@@ -194,4 +194,19 @@ public class LprodController {
 		
 		return result;
 	}
+	/*
+	 요청URI : /lprod/getMaxLprodId
+	요청파라미터 :
+	요청방식 : post
+	 */
+	@ResponseBody
+	@PostMapping("/getMaxLprodId")
+	public int getMaxLprodId() {
+		int result = this.lprodService.getMaxLprodId();
+		log.info("getMaxLprodId->result : " + result);
+		
+		return result;
+	}
+	
+	
 }

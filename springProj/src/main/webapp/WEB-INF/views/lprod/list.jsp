@@ -31,6 +31,7 @@ $(function(){
 	            xhr.setRequestHeader("${_csrf.headerName}","${_csrf.token}");
 	         },
 	         success:function(result){
+	        	 console.log(result);
 	      //4) success 시 목록의 마지막 행에 추가
 	            let str="";
 	            str += "<tr>";
@@ -38,8 +39,8 @@ $(function(){
 	            str += "<td><a data-lprod-id='"+lprodIdNew+"' class='aModal' data-toggle='modal' href='#modal-sm'>"+lprodGuNew+"</a></td>";
 	            str += "<td>"+lprodNmNew+"</td>";
 	            str += "</tr>";
-	         
-	         $("#lprodTbody").append(str);
+	         //id가 lprodTbody인 요소의 첫번째 자식요소로 추가됨
+	         $("#lprodTbody").prepend(str);
 	         $("#modal-insert").modal("hide");
 	         }
 	      });
@@ -47,14 +48,38 @@ $(function(){
 	
 	//아이디 자동 생성
 	$("#btnInsert").on("click",function(){
-		//tbody에 접근해서 자식요소들(<tr>들) 중에서 마지막 자식 요소(last())의 자식 중에서 0번째(<td>38</td>)의 text값
-		let lprodId = $("#lprodTbody").children().last().children("td").eq(0).html();
-		console.log("lprodId : " + lprodId);
-		//Number(숫자형문자)->숫자형으로 변환
-		lprodId = Number(lprodId) + 1;
+		// session.getAttribute("total");
+		let total = sessionStorage.getItem("total");
+		console.log("total : " + total);
 		
-		$("#lprodIdNew").val(lprodId);
-		$("#lprodIdNew").attr("readonly",true);
+		// lprod테이블의 MAX(LPROD_ID) + 1
+		//	contentType:"application/json;charset=utf=8"
+		//	data:JSON.stringify(data)
+		/*
+		요청 URI "/lprod/getMaxLprodId"
+		요청파라미터 : 
+		요청방식 : post
+		*/
+		$.ajax({
+			url:"/lprod/getMaxLprodId",
+			type:"post",
+			dataType:"text",
+			beforeSend:function(xhr){
+	            xhr.setRequestHeader("${_csrf.headerName}","${_csrf.token}");
+	         },
+			success:function(result){
+				console.log("result : " , result);
+				
+				lprodId = Number(result) + 1;
+			
+				$("#lprodIdNew").val(lprodId);
+				$("#lprodIdNew").attr("readonly",true);
+			}
+		});
+		// tbody에 접근해서 자식요소들(<tr>들) 중에서 마지막 자식 요소(last())의 자식 중에서 0번째(<td>38</td>)의 text값
+		// let lprodId = $("#lprodTbody").children().first().children("td").eq(0).html();
+		// console.log("lprodId : " + lprodId);
+		//Number(숫자형문자)->숫자형으로 변환
 	});
 	
 	//중복 체크
@@ -138,7 +163,7 @@ $(function(){
 							$(this).remove();
 						}
 					});
-				}//END IF
+				}// end if
 				$("#modal-del").modal("hide");
 			}
 		});
@@ -210,8 +235,8 @@ $(function(){
 		$(".edit").css("display","none");
 	});
 	
-	//모달 다루기
-// 	$(".aModal").("click",function(){});	//정적 요소 이벤트 처리
+	// 모달 다루기
+	// $(".aModal").("click",function(){});	//정적 요소 이벤트 처리
 	$(document).on("click",".aModal",function(){	//동적 요소 이벤트 처리
 		//this : 여러개의 동일 클래스 요소 중에서 방금 클릭한 바로 그 요소
 		//data-lprod-id="1"
@@ -283,8 +308,8 @@ $(function(){
 				let str = "";
 				
 				$("#lprodTbody").html("");
-				
-				//result : List<LprodVO>
+				// result : ArticlePage
+				// result.content : List<LprodVO>
 				$.each(result.content,function(idx, lprodVO){
 					str += "<tr>";
 					str += "<td>"+lprodVO.lprodId+"</td>";
@@ -294,9 +319,10 @@ $(function(){
 				});
 				
 				$("#lprodTbody").append(str);
+				// 페이징 블록 넣기
 				$("#divPagingArea").html(result.pagingArea)
-//	 			result.forEach(function(lprodVO){
-//	 			});
+				// result.forEach(function(lprodVO){
+				// });
 			}
 		});
 	});
@@ -312,11 +338,11 @@ $(function(){
 	}
 	console.log(currentPage)
 	console.log(keyword);
-	console.log("data : " + JSON.stringify(data))
-;	//아작나써유..(피)씨다타써. HTML(HyperText Markup Language)
+	console.log("data : " + JSON.stringify(data));
+	//아작나써유..(피)씨다타써. HTML(HyperText Markup Language)
 	//ajax : Asynchronous JavaScript And XML(eXtensible Markup Language)
 	$.ajax({
-		url:"/lprod/listAjax",
+		url:"/lprod/listAjax?currentPage="+currentPage,
 		type:"post",
 		contentType:"application/json;charset=utf-8",
 		data:JSON.stringify(data),
@@ -347,10 +373,19 @@ $(function(){
 			console.log(result.pagingArea);
 			//페이징 블록 넣기
 			$("#divPagingArea").html(result.pagingArea)
-// 			result.forEach(function(lprodVO){
-// 			});
 			
-			console.log("result : ",result);
+			// result : ArticlePage객체
+			// result.total : 전체 행의 수
+			/* sessionStorage
+				1) 브라우저 세션 기간 동안 만 사용할 수 있으며 탭이나 창을 닫을 때 삭제된다.
+				2) 새로고침을 해도 유지된다.
+				3) 변경 된 사항은 현재 페이지에서 닫힐 때까지 저장되어 사용할 수 있다.
+				4) 탭이 닫히면 저장된 데이터가 삭제 된다.
+			*/
+			// session.setAttribute("total" , result.total);
+			sessionStorage.setItem("total" , result.total);
+			// result.forEach(function(lprodVO){
+			// });
 		}
 	});
 });
@@ -364,7 +399,7 @@ $(function(){
 					<!-- lprodGu, lprodNm이 검색 대상 -->
 					<div class="input-group input-group-sm" 
 						style="width: 150px;float:right;">
-						<input type="text" name="keyword" id="keyword"
+						<input type="text" name="keyword" id="keyword" value="${param.keyword}"
 							class="form-control float-right" placeholder="Search" />
 						<div class="input-group-append">
 							<button type="button" id="btnSearch" class="btn btn-default">
@@ -382,7 +417,6 @@ $(function(){
 		2) 권한 정보
 		 - hasRole(role명) : 해당 role이 있으면 true
 		 - hasAnyrole(role명1, role명2) : 여러 role 중 하나라도 해당되는가?
-		 
 -->					
 <!-- 로그인 한 경우 -->
 <sec:authorize access="isAuthenticated()">
@@ -533,5 +567,3 @@ $(function(){
   <!-- /.modal-dialog -->
 </div>
 <!-- ///// 상품 분류 추가 모달 끝(작은 크기) ///  -->
-
-

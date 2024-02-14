@@ -28,7 +28,7 @@
 		WHERE  T.RNUM BETWEEN (#{currentPage}*10) - (10-1) AND (#{currentPage}*10)
 	</select>
 	
-	<!-- LprodVO[lprodId=2,lprodGu=null,lprodNm=null] -->
+	<!-- {"lprodId":"802","lprodGu":"S802","lprodNm":"상품분류명802"} -->
 	<select id="listOne" parameterType="lprodVO" resultType="lprodVO">
 		SELECT LPROD_ID, LPROD_GU, LPROD_NM
 		FROM   LPROD
@@ -48,15 +48,26 @@
 		WHERE  LPROD_ID = #{lprodId}
 	</delete>	
 	
-	<insert id="insertOne" parameterType="lprodVO">
-		INSERT INTO LPROD(LPROD_ID,LPROD_GU,LPROD_NM)
-		VALUES(#{lprodId}, #{lprodGu}, #{lprodNm}) 
-	</insert>
+	<update id="insertOne" parameterType="lprodVO">
+		MERGE INTO LPROD A
+		USING DUAL ON(A.LPROD_ID = #{lprodId})
+		 WHEN MATCHED THEN
+		      UPDATE
+		      SET A.LPROD_GU = #{lprodGu}
+		        , A.LPROD_NM = #{lprodNm}
+		WHEN NOT MATCHED THEN
+		     INSERT (LPROD_ID, LPROD_GU, LPROD_NM)
+		     VALUES(#{lprodId},#{lprodGu},#{lprodNm})
+	</update>
 	
 	<!-- 전체 글 수 -->
 	<select id="getTotal" parameterType="hashMap" resultType="int">
 		SELECT COUNT(*) FROM LPROD
 		WHERE  1 = 1
 		<include refid="where"></include>
+	</select>
+	
+	<select id="getMaxLprodId" resultType="int">
+		select max(lprod_id) from lprod
 	</select>
 </mapper>
