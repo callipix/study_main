@@ -34,5 +34,8 @@
 		<typeAlias type="kr.or.ddit.vo.Likes2VO" alias="likes2VO" />
 		<typeAlias type="kr.or.ddit.freeBoard.vo.FreeBoardVO" alias="freeBoardVO" />
 		<typeAlias type="kr.or.ddit.shop.vo.EcommerceVO" alias="ecommerceVO" />
+		<typeAlias type="kr.or.ddit.shop.vo.EcommerceAttachVO" alias="ecommerceAttachVO" />
+		<typeAlias type="kr.or.ddit.shop.vo.EcommerceColorVO" alias="ecommerceColorVO" />
+		<typeAlias type="kr.or.ddit.shop.vo.EcommerceSizeVO" alias="ecommerceSizeVO" />
 	</typeAliases>
 </configuration>

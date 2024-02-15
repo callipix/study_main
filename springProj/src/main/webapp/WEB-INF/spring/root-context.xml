@@ -36,7 +36,7 @@
 	dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
 	 -->
 	<bean id="uploadFolder" class="java.lang.String">
-		<constructor-arg value="C:\Users\Home\git\repository\springProj\src\main\webapp\resources\upload"></constructor-arg>
+		<constructor-arg value="C:\Users\PC-12\git\repository\springProj\src\main\webapp\resources\upload"></constructor-arg>
 	</bean>
 	
 	<bean id="uploadFolderDirect" class="java.lang.String">

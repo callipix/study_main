@@ -43,25 +43,25 @@ public class ShopController {
 		return "shop/create";
 	}
 	
-	@PostMapping(value = "/create" , params = "ecId")
-	public String createProduct(EcommerceVO ecommerceVO) {
+	@PostMapping(value = "/createPost")
+	public String createPost(EcommerceVO ecommerceVO) {
 		
 		int result = this.shopService.createProduct(ecommerceVO);
 		
 		log.info("createProduct -> result : " + result);
-		return "redirect:/shop/create?ecId="+ecommerceVO.getEcId();
+		return "redirect:/shop/detail?ecId="+ecommerceVO.getEcId();
 	}
 	
-	@RequestMapping(value="/detail",method=RequestMethod.GET)
+	@GetMapping(value = "/detail")
 	public String detail(String pdtId, Model model) {
 		log.info("detail->pdtId : " + pdtId);
 		EcommerceVO ecommerceVO = this.shopService.detail(pdtId);
 		//StudVO(studId=a001, studNm=개똥이, studPw=JAVA, enabled=1)
 		
-		log.info("detail->productVO : " + ecommerceVO);
+		log.info("detail->ecommerceVO : " + ecommerceVO);
 		//mav.addObject("속성명", 데이터);
 		//session.setAttribute("속성명", 데이터);
-		model.addAttribute("productVO", ecommerceVO);
+		model.addAttribute("ecommerceVO", ecommerceVO);
 		
 		//forwarding : jsp
 		return "shop/detail";

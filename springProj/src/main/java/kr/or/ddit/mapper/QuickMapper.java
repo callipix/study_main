@@ -24,6 +24,7 @@ public interface QuickMapper {
 	// LIKES테이블에 insert
 	public int insertLikes(List<LikesVO> likesVO);
 
+	// test용
 	// CARD2테이블에 insert
 	public int insertAllTest(List<Card2VO> card2VO);
 	

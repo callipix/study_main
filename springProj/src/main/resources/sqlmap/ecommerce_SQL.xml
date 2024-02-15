@@ -8,9 +8,41 @@
 		 where EC_ID = #{ecId}
 	</select>
 	
-	<insert id="createProduct">
-		insert into ECOMMERCE(EC_ID, EC_NAME, EC_COLOR, EC_DETAIL)
-		values (#{ecId},#{ecName},#{ecColor},#{ecDetail})
+	<insert id="createProduct" parameterType="ecommerceVO">
+		insert into ECOMMERCE(EC_ID, EC_NAME, EC_PRICE, EC_DETAIL)
+		values (#{ecId},#{ecName},#{ecPrice},#{ecDetail})
 	</insert>
-
+	
+	<insert id="insertEcommerceAttach" parameterType="ecommerceAttachVO">
+		insert into ECOMMERCE_ATTACH(EC_ID, EC_IMG, EC_URL, EC_SIZE, EC_TYPE)
+		VALUES (#{ecId} , #{ecImg} , #{ecUrl} , #{ecSize} , #{ecType})
+	</insert>
+	
+	<resultMap type="ecommerceVO" id="ecommerceMap">
+		<result property="ecId" column="EC_ID"/>
+		<result property="ecName" column="EC_NAME"/>
+		<result property="ecPrice" column="EC_PRICE"/>
+		<result property="ecDetail" column="EC_DETAIL"/>
+		
+		<collection property="ecommerceAttachVOList" resultMap="ecommerceMap"></collection>
+	</resultMap>
+	
+	<resultMap type="ecommerceAttachVO" id="ecmmerceAttachMap">
+		<result property="ecId" column="EC_ID"/>
+		<result property="ecImg" column="EC_IMG"/>
+		<result property="ecUrl" column="EC_URL"/>
+		<result property="ecSize" column="EC_SIZE"/>
+		<result property="ecType" column="EC_TYPE"/>
+	</resultMap>
+		
+	<insert id="insertColor" parameterType="ecommerceColorVO">
+			INSERT INTO ECOMMERCE_COLOR(EC_ID , EC_COLOR)
+			VALUES(#{ecId} , #{ecColor})
+	</insert>
+	
+	<insert id="insertSize" parameterType="ecommerceSizeVO">
+			INSERT INTO ECOMMERCE_SIZE(EC_ID, EC_SIZE)
+			VALUES(#{ecId} , #{ecSize})
+	</insert>
+	
 </mapper>
