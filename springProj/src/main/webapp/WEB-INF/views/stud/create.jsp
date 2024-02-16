@@ -105,8 +105,8 @@ $(function() {
 			</div>
 			
 			<div class="form-group">
-				<label for="studAddress">상세주소</label> 
-				<input type="text" name="studAddress" class="form-control" id="studAddress"
+				<label for="studAddress2">상세주소</label> 
+				<input type="text" name="studAddress2" class="form-control" id="studAddress2"
 					placeholder="상세주소" />
 			</div>
 			

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+\<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> 
@@ -219,11 +219,11 @@ $(function(){
 	<div class="card-header">
 		<h3 class="card-title">Quick Example</h3>
 	</div>
-	<!-- 
-요청 URI : /quick/createPost
-요청파라미터 : {emailAdres=test@test.com,password=java,uploadFile=파일객체}
-요청방식 : post
- -->
+	<!--
+	요청 URI : /quick/createPost
+	요청파라미터 : {emailAdres=test@test.com,password=java,uploadFile=파일객체}
+	요청방식 : post
+	 -->
  <form:form modelAttribute="quickVO" action="/quick/createPost?${_csrf.parameterName}=${_csrf.token}"
 		method="post" enctype="multipart/form-data">
 		<div class="card-body">

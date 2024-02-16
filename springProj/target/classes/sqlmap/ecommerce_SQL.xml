@@ -9,6 +9,10 @@
 	</select>
 	
 	<insert id="createProduct" parameterType="ecommerceVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="likesCode">
+         SELECT NVL(SUBSTR(MAX(EC_ID),1,3) 
+          || TRIM(TO_CHAR(SUBSTR(MAX(EC_ID),4)+1,'000')),'ECM001') FROM ECOMMERCE
+      </selectKey>
 		insert into ECOMMERCE(EC_ID, EC_NAME, EC_PRICE, EC_DETAIL)
 		values (#{ecId},#{ecName},#{ecPrice},#{ecDetail})
 	</insert>
