@@ -6,5 +6,5 @@ import lombok.Data;
 public class EcommerceSizeVO {
 
 	private String ecId;
-	private int ecSize;
+	private String ecSize;
 }

@@ -5,8 +5,8 @@ import kr.or.ddit.shop.vo.EcommerceVO;
 public interface ShopService {
 	
 	//특정상품조회
-	public EcommerceVO detail(String pdtId);
+	public EcommerceVO detail(String ecId);
 
-	public int createProduct(EcommerceVO ecommerceVO);
+	public int createProduct(EcommerceVO ecommerceVO , String ecColor , String ecSize);
 	
 }

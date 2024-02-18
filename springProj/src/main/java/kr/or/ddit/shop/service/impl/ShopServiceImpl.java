@@ -1,5 +1,6 @@
 package kr.or.ddit.shop.service.impl;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,13 +30,13 @@ public class ShopServiceImpl implements ShopService {
 	String uploadFolder;
 	
 	@Override
-	public EcommerceVO detail(String pdtId) {
-		return this.shopMapper.detail(pdtId);
+	public EcommerceVO detail(String ecId) {
+		return this.shopMapper.detail(ecId);
 	}
 
 	@Override
 	@Transactional
-	public int createProduct(EcommerceVO ecommerceVO) {
+	public int createProduct(EcommerceVO ecommerceVO , String ecColor , String ecSize) {
 		
 		int result = this.shopMapper.createProduct(ecommerceVO);
 		
@@ -50,7 +51,6 @@ public class ShopServiceImpl implements ShopService {
 		long size = 0;
 		String mime = "";
 		
-
 		MultipartFile[] uploadFile = ecommerceVO.getUploadFile();
 	
 		for(MultipartFile multipartFile : uploadFile) {
@@ -67,6 +67,7 @@ public class ShopServiceImpl implements ShopService {
 			try {
 				multipartFile.transferTo(saveFile);
 				
+				
 				EcommerceAttachVO ecommerceAttachVO = new EcommerceAttachVO();
 				ecommerceAttachVO.setEcId(ecommerceVO.getEcId());
 				ecommerceAttachVO.setEcImg(uploadFileName);
@@ -74,18 +75,24 @@ public class ShopServiceImpl implements ShopService {
 				ecommerceAttachVO.setEcSize(size);
 				ecommerceAttachVO.setEcType(mime);
 				result += this.shopMapper.insertEcommerceAttach(ecommerceAttachVO);
+				ecommerceVO.getEcommerceAttachVOList().add(ecommerceAttachVO);
 				
 			} catch (IllegalStateException | IOException e) {
 				log.error(e.getMessage());
 			}
+		
 		}
 		log.info("insertEcommerceAttach result가 나와야 함 "+ result);
 			
 			EcommerceColorVO ecommerceColorVO = ecommerceVO.getEcommerceColorVO();
 			EcommerceSizeVO ecommerceSizeVO = ecommerceVO.getEcommerceSizeVO();
-
+			
+			ecommerceColorVO.setEcId(ecommerceVO.getEcId());
+			ecommerceColorVO.setEcColor(ecColor);
 			result += this.shopMapper.insertColor(ecommerceColorVO);
 			
+			ecommerceSizeVO.setEcId(ecommerceVO.getEcId());
+			ecommerceSizeVO.setEcSize(ecSize);
 			result += this.shopMapper.insertSize(ecommerceSizeVO);
 			
 			return result;

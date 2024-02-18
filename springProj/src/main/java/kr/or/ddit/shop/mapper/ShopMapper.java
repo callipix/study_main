@@ -11,7 +11,9 @@ public interface ShopMapper {
 	public int createProduct(EcommerceVO ecommerceVO);
 
 	// Ecommerce 상세
-	public EcommerceVO detail(String pdtId);
+	public EcommerceVO detail(String ecId);
+
+	public EcommerceVO list(String ecId);
 
 	// EcommerceAttach테이블에 insert
 	public int insertEcommerceAttach(EcommerceAttachVO ecommerceAttachVO);

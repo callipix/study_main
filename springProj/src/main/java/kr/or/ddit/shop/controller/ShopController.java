@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.ddit.shop.service.impl.ShopService;
 import kr.or.ddit.shop.vo.EcommerceVO;
@@ -37,33 +39,41 @@ public class ShopController {
 	 * 
 	 * return productVO; }
 	 */
-	@GetMapping(value = "/create")
-	public String create() {
-				
-		return "shop/create";
-	}
 	
 	@PostMapping(value = "/createPost")
-	public String createPost(EcommerceVO ecommerceVO) {
+	public String createPost(@RequestParam("ecColor") String ecColor , @RequestParam("ecSize") String ecSize, EcommerceVO ecommerceVO) {
 		
-		int result = this.shopService.createProduct(ecommerceVO);
+		int result = this.shopService.createProduct(ecommerceVO , ecColor , ecSize);
 		
 		log.info("createProduct -> result : " + result);
-		return "redirect:/shop/detail?ecId="+ecommerceVO.getEcId();
+		return "redirect:/shop/list";
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "/createPostAjax")
+	public int createPostAjax(@RequestParam("ecColor") String ecColor , @RequestParam("ecSize") String ecSize, EcommerceVO ecommerceVO , Model model) {
+		
+		log.info("ecommerceVOList(전) : " + ecommerceVO.getEcommerceAttachVOList());
+		int result = this.shopService.createProduct(ecommerceVO , ecColor , ecSize);
+		log.info("name : " + ecColor);
+		log.info("size : " + ecSize);
+		
+		model.addAttribute("ecommerceVO" , ecommerceVO.getEcommerceAttachVOList());
+		log.info("ecommerceVO : " + ecommerceVO);
+		log.info("createProduct -> result : " + result);
+		log.info("ecommerceVOList(후) : " + ecommerceVO.getEcommerceAttachVOList());
+		return result;
 	}
 	
 	@GetMapping(value = "/detail")
-	public String detail(String pdtId, Model model) {
-		log.info("detail->pdtId : " + pdtId);
-		EcommerceVO ecommerceVO = this.shopService.detail(pdtId);
-		//StudVO(studId=a001, studNm=개똥이, studPw=JAVA, enabled=1)
+	public String detail(String ecId, Model model) {
+		log.info("detail->pdtId : " + ecId);
+
+		EcommerceVO ecommerceVO = this.shopService.detail(ecId);
 		
 		log.info("detail->ecommerceVO : " + ecommerceVO);
-		//mav.addObject("속성명", 데이터);
-		//session.setAttribute("속성명", 데이터);
 		model.addAttribute("ecommerceVO", ecommerceVO);
 		
-		//forwarding : jsp
 		return "shop/detail";
 	}
 

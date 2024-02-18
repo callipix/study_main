@@ -213,11 +213,8 @@ $(function(){
 					tdVal = $(this).children("td").eq(0).html();//11
 					//클릭한 Id값과 반복중인 Id값이 같을 때
 					if(lprodId==tdVal){
-						$(this).children("td").eq(1).html(
-			"<a data-lprod-id='"+lprodId
-				+"' class='aModal' data-toggle='modal' href='#modal-sm'>"+lprodGu
-				+"</a>"
-								);
+						$(this).children("td").eq(1).html("<a data-lprod-id='"+lprodId+
+							"' class='aModal' data-toggle='modal' href='#modal-sm'>"+lprodGu+"</a>");
 						$(this).children("td").eq(2).html(lprodNm);
 					}
 				});
