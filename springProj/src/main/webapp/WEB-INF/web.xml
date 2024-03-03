@@ -122,7 +122,8 @@
 	</error-page>
 	<!-- HTTP 상태코드를 사용하여 오류페이지 설정 끝 -->
 
-	<!-- 예외 타입을 사용한 에러 페이지 설정 시작 웹 컨테이너(tomcat서버) 설정 파일(web.xml)의 exception-type 
+	<!-- 예외 타입을 사용한 에러 페이지 설정 시작 웹 
+테이너(tomcat서버) 설정 파일(web.xml)의 exception-type 
 		태그 요소에 예외 타입을 설정하고 location 요소에 이동 대상 페이지 및 URI를 지정함 
 		
 		IOException, SQLException, NullPointerException, ArrayIndexOutOfBoundsException, ArtimeticException(0으로 

@@ -37,5 +37,7 @@
 		<typeAlias type="kr.or.ddit.shop.vo.EcommerceAttachVO" alias="ecommerceAttachVO" />
 		<typeAlias type="kr.or.ddit.shop.vo.EcommerceColorVO" alias="ecommerceColorVO" />
 		<typeAlias type="kr.or.ddit.shop.vo.EcommerceSizeVO" alias="ecommerceSizeVO" />
+		<typeAlias type="kr.or.ddit.member.TestServiceVO" alias="testServiceVO" />
+		<typeAlias type="kr.or.ddit.chat.vo.Room" alias="room" />
 	</typeAliases>
 </configuration>
